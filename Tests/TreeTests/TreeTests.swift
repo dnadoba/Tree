@@ -3,13 +3,27 @@ import XCTest
 
 final class TreeTests: XCTestCase {
     func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        XCTAssertEqual(Tree().text, "Hello, World!")
+        let tree = TreeNode(
+            "A",
+            children: [
+                .init("AA"),
+                .init("AB"),
+                .init("AC", children: [
+                    .init("ACA"),
+                    .init("ACB"),
+                    .init("ACC"),
+                    .init("ACD", children: [
+                        .init("ACDA"),
+                        .init("ACDB"),
+                        .init("ACDC"),
+                    ]),
+                ]),
+                .init("AD"),
+        ])
+        
+        XCTAssertEqual(
+            Array(tree),
+            ["A", "AA", "AB", "AC", "ACA", "ACB", "ACC", "ACD", "ACDA", "ACDB", "ACDC", "AD"]
+        )
     }
-
-    static var allTests = [
-        ("testExample", testExample),
-    ]
 }
