@@ -1,8 +1,4 @@
 
-struct Tree {
-    
-}
-
 struct TreeIndex {
     typealias Slice = ArraySlice<Int>
     var indices: [Int]
@@ -24,7 +20,7 @@ extension TreeIndex: Comparable {
 }
 
 struct TreeNode<Value> {
-    var value: Value
+    var value: Value?
     var children: [Self]
     internal init(_ value: Value, children: [TreeNode<Value>] = []) {
         self.value = value
@@ -36,7 +32,13 @@ struct TreeNode<Value> {
 extension TreeNode: MutableCollection {
     typealias Index = TreeIndex
     var startIndex: TreeIndex { TreeIndex(indices: []) }
-    var endIndex: TreeIndex { TreeIndex(indices: [children.count]) }
+    var endIndex: TreeIndex {
+        if value == nil {
+            return TreeIndex(indices: [])
+        } else {
+            return TreeIndex(indices: [children.count])
+        }
+    }
     subscript(position: TreeIndex) -> Value {
         get { self[position.indices[...]] }
         set { self[position.indices[...]] = newValue }
@@ -48,7 +50,7 @@ extension TreeNode: MutableCollection {
             if let index = position.first {
                 return children[index][position.dropFirst()]
             } else {
-                return value
+                return value!
             }
         }
         set {
@@ -62,7 +64,7 @@ extension TreeNode: MutableCollection {
             if let index = position.first {
                 yield &children[index][position.dropFirst()]
             } else {
-                yield &value
+                yield &value!
             }
         }
     }
@@ -91,3 +93,61 @@ extension TreeNode: MutableCollection {
     }
 }
 
+extension TreeNode: RangeReplaceableCollection {
+    init() {
+        self.value = nil
+        self.children = []
+    }
+    mutating func removeSubrange(_ bounds: Range<TreeIndex>) {
+        var indicies = [TreeIndex]()
+        var index = bounds.lowerBound
+        
+        while index < bounds.upperBound {
+            indicies.append(index)
+            index = self.index(after: index)
+        }
+        for index in indicies.reversed() {
+            remove(at: index)
+        }
+    }
+    @discardableResult
+    mutating func remove(at i: TreeIndex) -> Value {
+        remove(at: i.indices[...])
+    }
+    fileprivate mutating func remove(at i: TreeIndex.Slice) -> Value {
+        if i.count == 0 {
+            defer { value = nil }
+            return value!
+        }
+        if i.count == 1, let index = i.first {
+            return children.remove(at: index).value!
+        }
+        return remove(at: i.dropFirst())
+    }
+    
+    mutating func insert<S>(contentsOf newElements: S, at i: TreeIndex) where S : Collection, Self.Element == S.Element {
+        insert(contentsOf: newElements, at: i.indices[...])
+    }
+    fileprivate mutating func insert<S>(contentsOf newElements: S, at i: TreeIndex.Slice) where S : Collection, Self.Element == S.Element {
+        guard let index = i.first else {
+            if value == nil {
+                if let newValue = newElements.first {
+                    value = newValue
+                }
+                children.insert(contentsOf: newElements.dropFirst().map{ TreeNode($0) }, at: 0)
+            } else {
+                children.insert(contentsOf: newElements.map{ TreeNode($0) }, at: 0)
+            }
+            return
+        }
+        if i.count == 1 {
+            children.insert(contentsOf: newElements.dropFirst().map{ TreeNode($0) }, at: index)
+        }
+        return children[index].insert(contentsOf: newElements, at: i.dropFirst())
+    }
+    
+    mutating func replaceSubrange<C>(_ subrange: Range<TreeIndex>, with newElements: C) where C : Collection, Self.Element == C.Element {
+        removeSubrange(subrange)
+        insert(contentsOf: newElements, at: subrange.lowerBound)
+    }
+}
