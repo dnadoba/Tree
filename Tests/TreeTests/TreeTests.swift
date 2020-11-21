@@ -45,6 +45,14 @@ final class TreeTests: XCTestCase {
                 .init("AD"),
         ])
         
+        print(tree.endIndex)
+        var index = tree.index(before: tree.endIndex)
+        while index > tree.startIndex {
+            print(index)
+            print(tree[index].value)
+            index = tree.index(before: index)
+        }
+        
         XCTAssertEqual(
             Array(tree.reversed()).count,
             ["A", "AA", "AB", "AC", "ACA", "ACB", "ACC", "ACD", "ACDA", "ACDB", "ACDC", "AD"].count

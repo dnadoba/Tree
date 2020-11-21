@@ -1,14 +1,14 @@
 
-struct TreeIndex {
-    typealias Slice = ArraySlice<Int>
+public struct TreeIndex {
+    public typealias Slice = ArraySlice<Int>
     var indices: [Int]
 }
 
 extension TreeIndex: CustomDebugStringConvertible {
-    var debugDescription: String { indices.debugDescription }
+    public var debugDescription: String { indices.debugDescription }
 }
 extension TreeIndex: Comparable {
-    static func < (lhs: TreeIndex, rhs: TreeIndex) -> Bool {
+    public static func < (lhs: TreeIndex, rhs: TreeIndex) -> Bool {
         for (lhs, rhs) in zip(lhs.indices, rhs.indices) {
             if lhs == rhs {
                 continue
@@ -19,10 +19,10 @@ extension TreeIndex: Comparable {
     }
 }
 
-struct TreeNode<Value> {
-    var value: Value
-    var children: [Self]
-    internal init(_ value: Value, children: [TreeNode<Value>] = []) {
+public struct TreeNode<Value> {
+    public var value: Value
+    public var children: [Self]
+    public init(_ value: Value, children: [TreeNode<Value>] = []) {
         self.value = value
         self.children = children
     }
@@ -32,18 +32,18 @@ extension TreeNode: Equatable where Value: Equatable {}
 extension TreeNode: Hashable where Value: Hashable {}
 
 
-extension TreeNode: MutableCollection {
-    typealias Element = TreeNode<Value>
-    typealias Index = TreeIndex
-    var startIndex: TreeIndex { TreeIndex(indices: []) }
-    var endIndex: TreeIndex { TreeIndex(indices: [children.count]) }
-    subscript(position: TreeIndex) -> Element {
+extension TreeNode: MutableCollection, BidirectionalCollection {
+    public typealias Element = TreeNode<Value>
+    public typealias Index = TreeIndex
+    public var startIndex: TreeIndex { TreeIndex(indices: []) }
+    public var endIndex: TreeIndex { TreeIndex(indices: [children.count]) }
+    public subscript(position: TreeIndex) -> Element {
         get { self[position.indices[...]] }
         set { self[position.indices[...]] = newValue }
     }
         
         
-    subscript(position: TreeIndex.Slice) -> Element {
+    public subscript(position: TreeIndex.Slice) -> Element {
         get {
             if let index = position.first {
                 return children[index][position.dropFirst()]
@@ -67,7 +67,7 @@ extension TreeNode: MutableCollection {
         }
     }
     
-    func index(after i: TreeIndex) -> TreeIndex {
+    public func index(after i: TreeIndex) -> TreeIndex {
         self.index(after: i.indices[...]) ?? endIndex
     }
     fileprivate func index(after i: TreeIndex.Slice) -> TreeIndex? {
@@ -89,6 +89,35 @@ extension TreeNode: MutableCollection {
             return TreeIndex(indices: [0])
         }
     }
+    
+    public func index(before i: TreeIndex) -> TreeIndex {
+        self.index(before: i.indices[...])
+    }
+    fileprivate func index(before i: TreeIndex.Slice) -> TreeIndex {
+        guard let index = i.first else { fatalError("invalid index \(i)") }
+        if i.count == 1 {
+            let nextIndex = index - 1
+            if nextIndex < 0 {
+                return TreeIndex(indices: [])
+            } else {
+                return TreeIndex(indices: [nextIndex] + (children[nextIndex].deepestLastChildIndex()?.indices ?? []))
+            }
+        }
+        let nextTreeIndex = children[index].index(before: i.dropFirst())
+        return TreeIndex(indices: [index] + nextTreeIndex.indices)
+    }
+    fileprivate func deepestLastChildIndex() -> TreeIndex? {
+        if children.isEmpty {
+            return nil
+        }
+        let lastChildIndex = children.index(before: children.endIndex)
+        if let lastChildIndexTree = children[lastChildIndex].deepestLastChildIndex() {
+            return TreeIndex(indices: [lastChildIndex] + lastChildIndexTree.indices)
+        } else {
+            return TreeIndex(indices: [lastChildIndex])
+        }
+    }
+    
 }
 
 extension TreeNode {
@@ -114,9 +143,9 @@ extension TreeNode {
     }
 }
 
-struct TreeList<Value> {
-    var nodes: [TreeNode<Value>]
-    init(_ nodes: [TreeNode<Value>]) {
+public struct TreeList<Value> {
+    public var nodes: [TreeNode<Value>]
+    public init(_ nodes: [TreeNode<Value>]) {
         self.nodes = nodes
     }
 }
@@ -125,17 +154,17 @@ extension TreeList: Equatable where Value: Equatable {}
 extension TreeList: Hashable where Value: Hashable {}
 
 extension TreeList: ExpressibleByArrayLiteral {
-    init(arrayLiteral elements: TreeNode<Value>...) {
+    public init(arrayLiteral elements: TreeNode<Value>...) {
         self.init(elements)
     }
 }
 
-extension TreeList: MutableCollection {
-    typealias Element = TreeNode<Value>
-    typealias Index = TreeIndex
-    var startIndex: TreeIndex { TreeIndex(indices: [nodes.startIndex]) }
-    var endIndex: TreeIndex { TreeIndex(indices: [nodes.endIndex]) }
-    subscript(position: TreeIndex) -> Element {
+extension TreeList: MutableCollection, BidirectionalCollection {
+    public typealias Element = TreeNode<Value>
+    public typealias Index = TreeIndex
+    public var startIndex: TreeIndex { TreeIndex(indices: [nodes.startIndex]) }
+    public var endIndex: TreeIndex { TreeIndex(indices: [nodes.endIndex]) }
+    public subscript(position: TreeIndex) -> Element {
         get { self[position.indices[...]] }
         set { self[position.indices[...]] = newValue }
     }
@@ -163,7 +192,7 @@ extension TreeList: MutableCollection {
 //        }
     }
     
-    func index(after i: TreeIndex) -> TreeIndex {
+    public func index(after i: TreeIndex) -> TreeIndex {
         self.index(after: i.indices[...]) ?? endIndex
     }
     fileprivate func index(after i: TreeIndex.Slice) -> TreeIndex? {
@@ -177,13 +206,32 @@ extension TreeList: MutableCollection {
             return TreeIndex(indices: [nextIndex])
         }
     }
+    public func index(before i: TreeIndex) -> TreeIndex {
+        self.index(before: i.indices[...]) ?? endIndex
+    }
+    fileprivate func index(before i: TreeIndex.Slice) -> TreeIndex? {
+        guard let index = i.first else {
+            fatalError("invalid index \(i)")
+        }
+        if i.count > 1 {
+            let nextIndex = nodes[index].index(before: i.dropFirst())
+            return TreeIndex(indices: [index] + nextIndex.indices)
+        } else {
+            let nextIndex = index - 1
+            if let nextIndexTree = nodes[nextIndex].deepestLastChildIndex() {
+                return TreeIndex(indices: [nextIndex] + nextIndexTree.indices)
+            } else {
+                return TreeIndex(indices: [nextIndex])
+            }
+        }
+    }
 }
 
 extension TreeList: RangeReplaceableCollection {
-    init() {
+    public init() {
         self.init([])
     }
-    mutating func removeSubrange(_ bounds: Range<TreeIndex>) {
+    public mutating func removeSubrange(_ bounds: Range<TreeIndex>) {
         var indicies = [TreeIndex]()
         var index = bounds.lowerBound
 
@@ -196,7 +244,7 @@ extension TreeList: RangeReplaceableCollection {
         }
     }
     @discardableResult
-    mutating func remove(at i: TreeIndex) -> Element {
+    public mutating func remove(at i: TreeIndex) -> Element {
         remove(at: i.indices[...])
     }
     fileprivate mutating func remove(at i: TreeIndex.Slice) -> Element {
@@ -209,7 +257,7 @@ extension TreeList: RangeReplaceableCollection {
         return nodes.remove(at: index)
     }
 
-    mutating func insert<S>(contentsOf newElements: S, at i: TreeIndex) where S : Collection, Self.Element == S.Element {
+    public mutating func insert<S>(contentsOf newElements: S, at i: TreeIndex) where S : Collection, Self.Element == S.Element {
         insert(contentsOf: newElements, at: i.indices[...])
     }
     fileprivate mutating func insert<S>(contentsOf newElements: S, at i: TreeIndex.Slice) where S : Collection, Self.Element == S.Element {
@@ -223,7 +271,7 @@ extension TreeList: RangeReplaceableCollection {
         nodes.insert(contentsOf: newElements, at: index)
     }
 
-    mutating func replaceSubrange<C>(_ subrange: Range<TreeIndex>, with newElements: C) where C : Collection, Self.Element == C.Element {
+    public mutating func replaceSubrange<C>(_ subrange: Range<TreeIndex>, with newElements: C) where C : Collection, Self.Element == C.Element {
         removeSubrange(subrange)
         insert(contentsOf: newElements, at: subrange.lowerBound)
     }
