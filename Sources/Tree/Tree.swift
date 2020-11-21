@@ -20,7 +20,7 @@ extension TreeIndex: Comparable {
 }
 
 struct TreeNode<Value> {
-    var value: Value?
+    var value: Value
     var children: [Self]
     internal init(_ value: Value, children: [TreeNode<Value>] = []) {
         self.value = value
@@ -28,29 +28,26 @@ struct TreeNode<Value> {
     }
 }
 
+extension TreeNode: Equatable where Value: Equatable {}
+extension TreeNode: Hashable where Value: Hashable {}
+
 
 extension TreeNode: MutableCollection {
     typealias Index = TreeIndex
     var startIndex: TreeIndex { TreeIndex(indices: []) }
-    var endIndex: TreeIndex {
-        if value == nil {
-            return TreeIndex(indices: [])
-        } else {
-            return TreeIndex(indices: [children.count])
-        }
-    }
+    var endIndex: TreeIndex { TreeIndex(indices: [children.count]) }
     subscript(position: TreeIndex) -> Value {
         get { self[position.indices[...]] }
         set { self[position.indices[...]] = newValue }
     }
         
         
-    fileprivate subscript(position: TreeIndex.Slice) -> Value {
+    subscript(position: TreeIndex.Slice) -> Value {
         get {
             if let index = position.first {
                 return children[index][position.dropFirst()]
             } else {
-                return value!
+                return value
             }
         }
         set {
@@ -64,7 +61,7 @@ extension TreeNode: MutableCollection {
             if let index = position.first {
                 yield &children[index][position.dropFirst()]
             } else {
-                yield &value!
+                yield &value
             }
         }
     }
@@ -93,15 +90,101 @@ extension TreeNode: MutableCollection {
     }
 }
 
-extension TreeNode: RangeReplaceableCollection {
+extension TreeNode {
+    fileprivate mutating func remove(at i: TreeIndex.Slice) -> Value {
+        guard let index = i.first else {
+            fatalError("invalid index \(i)")
+        }
+        guard i.count == 1 else {
+            return children[index].remove(at: i.dropFirst())
+        }
+        return children.remove(at: index).value
+    }
+    
+    fileprivate mutating func insert<S>(contentsOf newElements: S, at i: TreeIndex.Slice) where S : Collection, Self.Element == S.Element {
+        guard let index = i.first else {
+            fatalError("invalid index \(i)")
+        }
+        guard i.count == 1 else {
+            children[index].insert(contentsOf: newElements, at: i.dropFirst())
+            return
+        }
+        children.insert(contentsOf: newElements.map{ TreeNode($0) }, at: index)
+    }
+}
+
+struct TreeRoot<Value> {
+    var nodes: [TreeNode<Value>]
+    init(_ nodes: [TreeNode<Value>]) {
+        self.nodes = nodes
+    }
+}
+
+extension TreeRoot: Equatable where Value: Equatable {}
+extension TreeRoot: Hashable where Value: Hashable {}
+
+extension TreeRoot: ExpressibleByArrayLiteral {
+    init(arrayLiteral elements: TreeNode<Value>...) {
+        self.init(elements)
+    }
+}
+
+extension TreeRoot: MutableCollection {
+    typealias Index = TreeIndex
+    var startIndex: TreeIndex { TreeIndex(indices: [nodes.startIndex]) }
+    var endIndex: TreeIndex { TreeIndex(indices: [nodes.endIndex]) }
+    subscript(position: TreeIndex) -> Value {
+        get { self[position.indices[...]] }
+        set { self[position.indices[...]] = newValue }
+    }
+        
+        
+    fileprivate subscript(position: TreeIndex.Slice) -> Value {
+        get {
+            guard let index = position.first else {
+                fatalError("invalid index \(position)")
+            }
+            return nodes[index][position.dropFirst()]
+        }
+        set {
+            guard let index = position.first else {
+                fatalError("invalid index \(position)")
+            }
+            nodes[index][position.dropFirst()] = newValue
+        }
+        // crashes the compiler
+//        _modify {
+//            guard let index = position.first else {
+//                fatalError("invalid index \(position)")
+//            }
+//            yield &nodes[index][position.dropFirst()]
+//        }
+    }
+    
+    func index(after i: TreeIndex) -> TreeIndex {
+        self.index(after: i.indices[...]) ?? endIndex
+    }
+    fileprivate func index(after i: TreeIndex.Slice) -> TreeIndex? {
+        guard let index = i.first else {
+            fatalError("invalid index \(i)")
+        }
+        if let nextIndex = nodes[index].index(after: i.dropFirst()) {
+            return TreeIndex(indices: [index] + nextIndex.indices)
+        } else {
+            let nextIndex = index + 1
+            return TreeIndex(indices: [nextIndex])
+        }
+    }
+}
+
+extension TreeRoot: RangeReplaceableCollection {
     init() {
-        self.value = nil
-        self.children = []
+        self.init([])
     }
     mutating func removeSubrange(_ bounds: Range<TreeIndex>) {
         var indicies = [TreeIndex]()
         var index = bounds.lowerBound
-        
+
         while index < bounds.upperBound {
             indicies.append(index)
             index = self.index(after: index)
@@ -115,37 +198,29 @@ extension TreeNode: RangeReplaceableCollection {
         remove(at: i.indices[...])
     }
     fileprivate mutating func remove(at i: TreeIndex.Slice) -> Value {
-        if i.count == 0 {
-            defer { value = nil }
-            return value!
+        guard let index = i.first else {
+            fatalError("invalid index \(i)")
         }
-        if i.count == 1, let index = i.first {
-            return children.remove(at: index).value!
+        guard i.count == 1 else {
+            return nodes[index].remove(at: i.dropFirst())
         }
-        return remove(at: i.dropFirst())
+        return nodes.remove(at: index).value
     }
-    
+
     mutating func insert<S>(contentsOf newElements: S, at i: TreeIndex) where S : Collection, Self.Element == S.Element {
         insert(contentsOf: newElements, at: i.indices[...])
     }
     fileprivate mutating func insert<S>(contentsOf newElements: S, at i: TreeIndex.Slice) where S : Collection, Self.Element == S.Element {
         guard let index = i.first else {
-            if value == nil {
-                if let newValue = newElements.first {
-                    value = newValue
-                }
-                children.insert(contentsOf: newElements.dropFirst().map{ TreeNode($0) }, at: 0)
-            } else {
-                children.insert(contentsOf: newElements.map{ TreeNode($0) }, at: 0)
-            }
+            fatalError("invalid index \(i)")
+        }
+        guard i.count == 1 else {
+            nodes[index].insert(contentsOf: newElements, at: i.dropFirst())
             return
         }
-        if i.count == 1 {
-            children.insert(contentsOf: newElements.dropFirst().map{ TreeNode($0) }, at: index)
-        }
-        return children[index].insert(contentsOf: newElements, at: i.dropFirst())
+        nodes.insert(contentsOf: newElements.map{ TreeNode($0) }, at: index)
     }
-    
+
     mutating func replaceSubrange<C>(_ subrange: Range<TreeIndex>, with newElements: C) where C : Collection, Self.Element == C.Element {
         removeSubrange(subrange)
         insert(contentsOf: newElements, at: subrange.lowerBound)
