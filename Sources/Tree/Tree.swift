@@ -113,23 +113,23 @@ extension TreeNode {
     }
 }
 
-struct TreeRoot<Value> {
+struct TreeList<Value> {
     var nodes: [TreeNode<Value>]
     init(_ nodes: [TreeNode<Value>]) {
         self.nodes = nodes
     }
 }
 
-extension TreeRoot: Equatable where Value: Equatable {}
-extension TreeRoot: Hashable where Value: Hashable {}
+extension TreeList: Equatable where Value: Equatable {}
+extension TreeList: Hashable where Value: Hashable {}
 
-extension TreeRoot: ExpressibleByArrayLiteral {
+extension TreeList: ExpressibleByArrayLiteral {
     init(arrayLiteral elements: TreeNode<Value>...) {
         self.init(elements)
     }
 }
 
-extension TreeRoot: MutableCollection {
+extension TreeList: MutableCollection {
     typealias Index = TreeIndex
     var startIndex: TreeIndex { TreeIndex(indices: [nodes.startIndex]) }
     var endIndex: TreeIndex { TreeIndex(indices: [nodes.endIndex]) }
@@ -177,7 +177,7 @@ extension TreeRoot: MutableCollection {
     }
 }
 
-extension TreeRoot: RangeReplaceableCollection {
+extension TreeList: RangeReplaceableCollection {
     init() {
         self.init([])
     }

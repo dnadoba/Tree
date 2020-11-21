@@ -62,7 +62,7 @@ final class TreeTests: XCTestCase {
     }
     
     func testTreeRootIndexAfter() {
-        let tree: TreeRoot = [TreeNode(
+        let tree: TreeList = [TreeNode(
             "A",
             children: [
                 .init("AA"),
@@ -86,7 +86,7 @@ final class TreeTests: XCTestCase {
         )
     }
     func testTreeRootReveresed() {
-        let tree: TreeRoot = [TreeNode(
+        let tree: TreeList = [TreeNode(
             "A",
             children: [
                 .init("AA"),
@@ -121,7 +121,7 @@ final class TreeTests: XCTestCase {
     }
     
     func testRemoveAll() {
-        var tree: TreeRoot = [TreeNode(
+        var tree: TreeList = [TreeNode(
             "A",
             children: [
                 .init("AA"),
@@ -142,15 +142,15 @@ final class TreeTests: XCTestCase {
         XCTAssertEqual(tree.count, 0)
     }
     func testInsert() {
-        var tree = TreeRoot<String>()
+        var tree = TreeList<String>()
         tree.insert("A", at: tree.startIndex)
         XCTAssertEqual(Array(tree), ["A"])
     }
     func testInsertContentsOf() {
-        var tree = TreeRoot<String>()
+        var tree = TreeList<String>()
         tree.insert(contentsOf: ["A", "B", "C"], at: tree.startIndex)
         XCTAssertEqual(Array(tree), ["A", "B", "C"])
-        XCTAssertEqual(tree, TreeRoot([.init("A"), .init("B"), .init("C")]))
+        XCTAssertEqual(tree, TreeList([.init("A"), .init("B"), .init("C")]))
         print(tree)
     }
 }
