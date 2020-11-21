@@ -22,7 +22,7 @@ final class TreeTests: XCTestCase {
         ])
         
         XCTAssertEqual(
-            Array(tree),
+            tree.map(\.value),
             ["A", "AA", "AB", "AC", "ACA", "ACB", "ACC", "ACD", "ACDA", "ACDB", "ACDC", "AD"]
         )
     }
@@ -51,12 +51,12 @@ final class TreeTests: XCTestCase {
         )
         
         XCTAssertEqual(
-            Set(tree.reversed()),
+            Set(tree.reversed().map(\.value)),
             Set(["A", "AA", "AB", "AC", "ACA", "ACB", "ACC", "ACD", "ACDA", "ACDB", "ACDC", "AD"])
         )
         
         XCTAssertEqual(
-            Array(tree.reversed()),
+            tree.reversed().map(\.value),
             ["A", "AA", "AB", "AC", "ACA", "ACB", "ACC", "ACD", "ACDA", "ACDB", "ACDC", "AD"].reversed()
         )
     }
@@ -81,7 +81,7 @@ final class TreeTests: XCTestCase {
         ])]
         
         XCTAssertEqual(
-            Array(tree),
+            tree.map(\.value),
             ["A", "AA", "AB", "AC", "ACA", "ACB", "ACC", "ACD", "ACDA", "ACDB", "ACDC", "AD"]
         )
     }
@@ -110,12 +110,12 @@ final class TreeTests: XCTestCase {
         )
         
         XCTAssertEqual(
-            Set(tree.reversed()),
+            Set(tree.reversed().map(\.value)),
             Set(["A", "AA", "AB", "AC", "ACA", "ACB", "ACC", "ACD", "ACDA", "ACDB", "ACDC", "AD"])
         )
         
         XCTAssertEqual(
-            Array(tree.reversed()),
+            tree.reversed().map(\.value),
             ["A", "AA", "AB", "AC", "ACA", "ACB", "ACC", "ACD", "ACDA", "ACDB", "ACDC", "AD"].reversed()
         )
     }
@@ -143,13 +143,13 @@ final class TreeTests: XCTestCase {
     }
     func testInsert() {
         var tree = TreeList<String>()
-        tree.insert("A", at: tree.startIndex)
-        XCTAssertEqual(Array(tree), ["A"])
+        tree.insert(TreeNode("A"), at: tree.startIndex)
+        XCTAssertEqual(tree.map(\.value), ["A"])
     }
     func testInsertContentsOf() {
         var tree = TreeList<String>()
-        tree.insert(contentsOf: ["A", "B", "C"], at: tree.startIndex)
-        XCTAssertEqual(Array(tree), ["A", "B", "C"])
+        tree.insert(contentsOf: ["A", "B", "C"].map{ TreeNode($0) }, at: tree.startIndex)
+        XCTAssertEqual(tree.map(\.value), ["A", "B", "C"])
         XCTAssertEqual(tree, TreeList([.init("A"), .init("B"), .init("C")]))
         print(tree)
     }

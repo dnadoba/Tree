@@ -33,35 +33,36 @@ extension TreeNode: Hashable where Value: Hashable {}
 
 
 extension TreeNode: MutableCollection {
+    typealias Element = TreeNode<Value>
     typealias Index = TreeIndex
     var startIndex: TreeIndex { TreeIndex(indices: []) }
     var endIndex: TreeIndex { TreeIndex(indices: [children.count]) }
-    subscript(position: TreeIndex) -> Value {
+    subscript(position: TreeIndex) -> Element {
         get { self[position.indices[...]] }
         set { self[position.indices[...]] = newValue }
     }
         
         
-    subscript(position: TreeIndex.Slice) -> Value {
+    subscript(position: TreeIndex.Slice) -> Element {
         get {
             if let index = position.first {
                 return children[index][position.dropFirst()]
             } else {
-                return value
+                return self
             }
         }
         set {
             if let index = position.first {
                 return children[index][position.dropFirst()] = newValue
             } else {
-                self.value = newValue
+                self = newValue
             }
         }
         _modify {
             if let index = position.first {
                 yield &children[index][position.dropFirst()]
             } else {
-                yield &value
+                yield &self
             }
         }
     }
@@ -91,14 +92,14 @@ extension TreeNode: MutableCollection {
 }
 
 extension TreeNode {
-    fileprivate mutating func remove(at i: TreeIndex.Slice) -> Value {
+    fileprivate mutating func remove(at i: TreeIndex.Slice) -> Element {
         guard let index = i.first else {
             fatalError("invalid index \(i)")
         }
         guard i.count == 1 else {
             return children[index].remove(at: i.dropFirst())
         }
-        return children.remove(at: index).value
+        return children.remove(at: index)
     }
     
     fileprivate mutating func insert<S>(contentsOf newElements: S, at i: TreeIndex.Slice) where S : Collection, Self.Element == S.Element {
@@ -109,7 +110,7 @@ extension TreeNode {
             children[index].insert(contentsOf: newElements, at: i.dropFirst())
             return
         }
-        children.insert(contentsOf: newElements.map{ TreeNode($0) }, at: index)
+        children.insert(contentsOf: newElements, at: index)
     }
 }
 
@@ -130,16 +131,17 @@ extension TreeList: ExpressibleByArrayLiteral {
 }
 
 extension TreeList: MutableCollection {
+    typealias Element = TreeNode<Value>
     typealias Index = TreeIndex
     var startIndex: TreeIndex { TreeIndex(indices: [nodes.startIndex]) }
     var endIndex: TreeIndex { TreeIndex(indices: [nodes.endIndex]) }
-    subscript(position: TreeIndex) -> Value {
+    subscript(position: TreeIndex) -> Element {
         get { self[position.indices[...]] }
         set { self[position.indices[...]] = newValue }
     }
         
         
-    fileprivate subscript(position: TreeIndex.Slice) -> Value {
+    fileprivate subscript(position: TreeIndex.Slice) -> Element {
         get {
             guard let index = position.first else {
                 fatalError("invalid index \(position)")
@@ -194,17 +196,17 @@ extension TreeList: RangeReplaceableCollection {
         }
     }
     @discardableResult
-    mutating func remove(at i: TreeIndex) -> Value {
+    mutating func remove(at i: TreeIndex) -> Element {
         remove(at: i.indices[...])
     }
-    fileprivate mutating func remove(at i: TreeIndex.Slice) -> Value {
+    fileprivate mutating func remove(at i: TreeIndex.Slice) -> Element {
         guard let index = i.first else {
             fatalError("invalid index \(i)")
         }
         guard i.count == 1 else {
             return nodes[index].remove(at: i.dropFirst())
         }
-        return nodes.remove(at: index).value
+        return nodes.remove(at: index)
     }
 
     mutating func insert<S>(contentsOf newElements: S, at i: TreeIndex) where S : Collection, Self.Element == S.Element {
@@ -218,7 +220,7 @@ extension TreeList: RangeReplaceableCollection {
             nodes[index].insert(contentsOf: newElements, at: i.dropFirst())
             return
         }
-        nodes.insert(contentsOf: newElements.map{ TreeNode($0) }, at: index)
+        nodes.insert(contentsOf: newElements, at: index)
     }
 
     mutating func replaceSubrange<C>(_ subrange: Range<TreeIndex>, with newElements: C) where C : Collection, Self.Element == C.Element {
