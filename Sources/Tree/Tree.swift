@@ -300,10 +300,16 @@ extension TreeNode {
     public func mapValues<NewValue>(_ transform: (Value) -> NewValue) -> TreeNode<NewValue> {
         .init(transform(value), children: children.map { $0.mapValues(transform) })
     }
+    public func mapValuesWithNode<NewValue>(_ transform: (TreeNode<Value>) -> NewValue) -> TreeNode<NewValue> {
+        .init(transform(self), children: children.map { $0.mapValuesWithNode(transform) })
+    }
 }
 
 extension TreeList {
     public func mapValues<NewValue>(_ transform: (Value) -> NewValue) -> TreeList<NewValue> {
         .init(nodes.map({ $0.mapValues(transform) }))
+    }
+    public func mapValuesWithNode<NewValue>(_ transform: (TreeNode<Value>) -> NewValue) -> TreeList<NewValue> {
+        .init(nodes.map({ $0.mapValuesWithNode(transform) }))
     }
 }
