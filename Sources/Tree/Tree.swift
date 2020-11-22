@@ -143,6 +143,12 @@ extension TreeNode {
     }
 }
 
+extension TreeNode {
+    public func parentIndex(of i: TreeIndex) -> TreeIndex {
+        TreeIndex(indices: i.indices.dropLast())
+    }
+}
+
 public struct TreeList<Value> {
     public var nodes: [TreeNode<Value>]
     public init(_ nodes: [TreeNode<Value>]) {
@@ -227,7 +233,7 @@ extension TreeList: MutableCollection, BidirectionalCollection {
     }
 }
 
-extension TreeList: RangeReplaceableCollection {
+extension TreeList {
     public init() {
         self.init([])
     }
@@ -270,9 +276,34 @@ extension TreeList: RangeReplaceableCollection {
         }
         nodes.insert(contentsOf: newElements, at: index)
     }
+}
 
-    public mutating func replaceSubrange<C>(_ subrange: Range<TreeIndex>, with newElements: C) where C : Collection, Self.Element == C.Element {
-        removeSubrange(subrange)
-        insert(contentsOf: newElements, at: subrange.lowerBound)
+extension TreeList {
+    public mutating func insert(_ element: TreeNode<Value>, at index: TreeIndex) {
+        insert(contentsOf: CollectionOfOne(element), at: index)
+    }
+}
+
+extension TreeList {
+    public func parentIndex(of i: TreeIndex) -> TreeIndex {
+        TreeIndex(indices: i.indices.dropLast())
+    }
+    public func childIndex(of i: TreeIndex) -> Int {
+        i.indices.first!
+    }
+    public func addChildIndex(_ i: Int, to baseIndex: TreeIndex) -> TreeIndex {
+        TreeIndex(indices: baseIndex.indices + [i])
+    }
+}
+
+extension TreeNode {
+    public func mapValues<NewValue>(_ transform: (Value) -> NewValue) -> TreeNode<NewValue> {
+        .init(transform(value), children: children.map { $0.mapValues(transform) })
+    }
+}
+
+extension TreeList {
+    public func mapValues<NewValue>(_ transform: (Value) -> NewValue) -> TreeList<NewValue> {
+        .init(nodes.map({ $0.mapValues(transform) }))
     }
 }

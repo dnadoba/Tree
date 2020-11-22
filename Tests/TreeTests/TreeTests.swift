@@ -128,7 +128,41 @@ final class TreeTests: XCTestCase {
         )
     }
     
-    func testRemoveAll() {
+//    func testRemoveAll() {
+//        var tree: TreeList = [TreeNode(
+//            "A",
+//            children: [
+//                .init("AA"),
+//                .init("AB"),
+//                .init("AC", children: [
+//                    .init("ACA"),
+//                    .init("ACB"),
+//                    .init("ACC"),
+//                    .init("ACD", children: [
+//                        .init("ACDA"),
+//                        .init("ACDB"),
+//                        .init("ACDC"),
+//                    ]),
+//                ]),
+//                .init("AD"),
+//        ])]
+//        tree.removeAll()
+//        XCTAssertEqual(tree.count, 0)
+//    }
+    func testInsert() {
+        var tree = TreeList<String>()
+        tree.insert(contentsOf: [TreeNode("A")], at: tree.startIndex)
+        XCTAssertEqual(tree.map(\.value), ["A"])
+    }
+    func testInsertContentsOf() {
+        var tree = TreeList<String>()
+        tree.insert(contentsOf: ["A", "B", "C"].map{ TreeNode($0) }, at: tree.startIndex)
+        XCTAssertEqual(tree.map(\.value), ["A", "B", "C"])
+        XCTAssertEqual(tree, TreeList([.init("A"), .init("B"), .init("C")]))
+        print(tree)
+    }
+    
+    func testDiffing() {
         var tree: TreeList = [TreeNode(
             "A",
             children: [
@@ -146,19 +180,18 @@ final class TreeTests: XCTestCase {
                 ]),
                 .init("AD"),
         ])]
-        tree.removeAll()
-        XCTAssertEqual(tree.count, 0)
-    }
-    func testInsert() {
-        var tree = TreeList<String>()
-        tree.insert(TreeNode("A"), at: tree.startIndex)
-        XCTAssertEqual(tree.map(\.value), ["A"])
-    }
-    func testInsertContentsOf() {
-        var tree = TreeList<String>()
-        tree.insert(contentsOf: ["A", "B", "C"].map{ TreeNode($0) }, at: tree.startIndex)
-        XCTAssertEqual(tree.map(\.value), ["A", "B", "C"])
-        XCTAssertEqual(tree, TreeList([.init("A"), .init("B"), .init("C")]))
-        print(tree)
+        let tree1 = tree
+        var tree2 = tree
+        tree2.remove(at: tree.firstIndex(where: { $0.value == "AC" })!)
+        XCTAssertEqual(
+            tree2,
+            [TreeNode(
+                "A",
+                children: [
+                    .init("AA"),
+                    .init("AB"),
+                    .init("AD"),
+            ])]
+        )
     }
 }
