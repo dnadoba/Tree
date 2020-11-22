@@ -289,7 +289,7 @@ extension TreeList {
         TreeIndex(indices: i.indices.dropLast())
     }
     public func childIndex(of i: TreeIndex) -> Int {
-        i.indices.first!
+        i.indices.last!
     }
     public func addChildIndex(_ i: Int, to baseIndex: TreeIndex) -> TreeIndex {
         TreeIndex(indices: baseIndex.indices + [i])

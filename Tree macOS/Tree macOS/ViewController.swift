@@ -7,7 +7,6 @@
 
 import Cocoa
 import Tree
-import OutlineViewDiffableDataSource
 
 extension BidirectionalCollection {
     subscript(safe i: Index) -> Element? {
@@ -16,17 +15,13 @@ extension BidirectionalCollection {
     }
 }
 
-final class NSItem<Value: Hashable>: NSObject, OutlineViewItem {
+final class NSItem<Value: Hashable>: NSObject {
     var value: Value
-    init(_ value: Value, hasChildren: Bool) {
+    init(_ value: Value) {
         self.value = value
-        self.hasChildren = hasChildren
         super.init()
     }
     @objc override var debugDescription: String { "NSItem(\(value))" }
-    
-    var hasChildren: Bool
-    var isExpandable: Bool { true }
     
     /// Necessary for sets.
     override var hash: Int { value.hashValue }
@@ -36,8 +31,7 @@ final class NSItem<Value: Hashable>: NSObject, OutlineViewItem {
       guard let other = object as? Self else { return false }
       return other.value == value
     }
-    
-    func cellViewType(for tableColumn: NSTableColumn?) -> NSTableCellView.Type { MasterCellView.self }
+
 }
 
 // MARK: - Private API
@@ -145,45 +139,17 @@ class TreeController: NSViewController {
         column.dataCell = NSTextFieldCell()
         outlineView.addTableColumn(column)
         outlineView.allowsMultipleSelection = true
-        outlineView.dataSource = dataSource
+        outlineView.delegate = self
+        outlineView.dataSource = self
         
         modifyTree({ _ in })
+        outlineView.registerForDraggedTypes([.string])
         
     }
-    /// Diffable data source similar to `NSCollectionViewDiffableDataSource`.
-    private lazy var dataSource: OutlineViewDiffableDataSource = {
-      let source = OutlineViewDiffableDataSource(outlineView: outlineView)
-      source.draggingHandlers = OutlineViewDiffableDataSource.DraggingHandlers(validateDrop: { _, drop in
-
-        // Option-, Control- and Command- modifiers are disabled
-        guard drop.operation.contains(.move) else { return nil }
-
-        // Dragging on, before and after self is denied
-        guard drop.draggedItems.allSatisfy({ $0 !== drop.targetItem }) else { return nil }
-
-        return drop
-      }, acceptDrop: { sender, drop in
-        
-        let itemIndex = self.getTreeIndex(for: drop.targetItem)
-
-        let sourceIndices = drop.draggedItems.map(self.getTreeIndex(for:)).sorted(by: <)
-        self.modifyTree({
-            var elements: [TreeNode<Value>] = []
-            elements.reserveCapacity(sourceIndices.count)
-            for index in sourceIndices.reversed() {
-                elements.append($0.remove(at: index))
-            }
-            $0.insert(contentsOf: elements.reversed(), at: itemIndex)
-        })
-        return true
-      })
-      return source
-    }()
     func updateClassTree(_ tree: TreeList<Value>) {
-        classTree = tree.mapValuesWithNode { node in
-            let value = node.value
+        classTree = tree.mapValues { value in
             if classCache[value] == nil {
-                classCache[value] = Item(value, hasChildren: !node.children.isEmpty)
+                classCache[value] = Item(value)
             }
             return classCache[value]!
         }
@@ -220,22 +186,115 @@ extension TreeController {
             .map(getTreeIndex(for:))
     }
 }
+extension TreeController: NSOutlineViewDelegate {
+//    func outlineView(_ outlineView: NSOutlineView, rowViewForItem item: Any) -> NSTableRowView? {
+//        guard let id = (item as? Item)?.value else {
+//            fatalError("could not cast item \(item) to \(Item.self)")
+//        }
+//        guard let value = tree.first(where: { $0.value == id }) else {
+//            fatalError("item \(id) not in tree")
+//        }
+//        print(view)
+//        let view = NSTableRowView()
+//        return view
+//    }
+    func outlineView(_ outlineView: NSOutlineView, dataCellFor tableColumn: NSTableColumn?, item: Any) -> NSCell? {
+        let id = self.castToItem(item)
+        return NSTextFieldCell(textCell: id)
+    }
+    func outlineView(_ outlineView: NSOutlineView, objectValueFor tableColumn: NSTableColumn?, byItem item: Any?) -> Any? {
+        return self.castToItem(item) as NSString
+    }
+}
 
 extension TreeController: NSOutlineViewDataSource {
-    
-    func makeSnapshot() -> DiffableDataSourceSnapshot {
-        var snapshot = DiffableDataSourceSnapshot()
-        for (index, item) in zip(classTree.indices, classTree) {
-            let parent = classTree[safe: classTree.parentIndex(of: index)]
-            snapshot.appendItems([item.value], into: parent?.value)
+    func outlineView(_ outlineView: NSOutlineView, pasteboardWriterForItem item: Any) -> NSPasteboardWriting? {
+        let pasteboardItem = NSPasteboardItem()
+        pasteboardItem.setString(castToItem(item), forType: .string)
+        return pasteboardItem
+    }
+    func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
+        getTreeNode(for: item).children.isEmpty == false
+    }
+    func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
+        guard let item = item else {
+            return classTree.nodes.count
         }
-        return snapshot
+        return getTreeNode(for: item).children.count
+    }
+    func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
+        let treeNodes: [TreeNode<Item>] = {
+            guard let item = item else {
+                return classTree.nodes
+            }
+            return getTreeNode(for: item).children
+        }()
+        return treeNodes[index].value
+    }
+    func outlineView(_ outlineView: NSOutlineView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forItems draggedItems: [Any]) {
+        self.draggedItems = draggedItems.map({ $0 as! Item })
+    }
+    func outlineView(_ outlineView: NSOutlineView, validateDrop info: NSDraggingInfo, proposedItem item: Any?, proposedChildIndex index: Int) -> NSDragOperation {
+        return .move
+    }
+    func outlineView(_ outlineView: NSOutlineView, draggingSession session: NSDraggingSession, endedAt screenPoint: NSPoint, operation: NSDragOperation) {
+        
+    }
+    func outlineView(_ outlineView: NSOutlineView, acceptDrop info: NSDraggingInfo, item: Any?, childIndex index: Int) -> Bool {
+        let itemIndex = getTreeIndex(for: item)
+        let dropIndex: TreeIndex = {
+            if index < 0 {
+                return itemIndex
+            } else {
+                return tree.addChildIndex(index, to: itemIndex)
+            }
+        }()
+        let sourceIndices = draggedItems.map(getTreeIndex(for:)).sorted(by: <)
+        modifyTree({
+            var elements: [TreeNode<Value>] = []
+            elements.reserveCapacity(sourceIndices.count)
+            for index in sourceIndices.reversed() {
+                elements.append($0.remove(at: index))
+            }
+            $0.insert(contentsOf: elements.reversed(), at: dropIndex)
+        })
+        return true
     }
     
     func modifyTree(_ modify: (inout TreeList<Value>) -> ()) {
         modify(&tree)
+        let oldTree = classTree
         updateClassTree(tree)
-        dataSource.applySnapshot(makeSnapshot(), animatingDifferences: true)
+        let newTree = classTree
+        let diff = newTree.difference(from: oldTree, by: { $0.value == $1.value })
+            //.inferringMoves()
+        print(diff)
+        //outlineView.reloadData()
+        outlineView.beginUpdates()
+        for change in diff {
+            switch change {
+            case let .insert(offset, _, oldOffset):
+                let newTreeIndex = newTree.index(newTree.startIndex, offsetBy: offset)
+                let newChildIndex = newTree.childIndex(of: newTreeIndex)
+                let newParent = newTree[safe: newTree.parentIndex(of: newTreeIndex)]?.value
+                if let oldOffset = oldOffset {
+                    let oldTreeIndex = oldTree.index(oldTree.startIndex, offsetBy: oldOffset)
+                    let oldChildIndex = oldTree.childIndex(of: oldTreeIndex)
+                    let oldParent = oldTree[safe: oldTree.parentIndex(of: oldTreeIndex)]?.value
+                    outlineView.moveItem(at: oldChildIndex, inParent: oldParent, to: newChildIndex, inParent: newParent)
+                } else {
+                    outlineView.insertItems(at: [newChildIndex], inParent: newParent, withAnimation: [.effectFade, .slideDown])
+                }
+            case let .remove(offset, _, oldOffset):
+                guard oldOffset == nil else { continue }
+                let treeIndex = oldTree.index(oldTree.startIndex, offsetBy: offset)
+                let childIndex = oldTree.childIndex(of: treeIndex)
+                let parent = oldTree[safe: oldTree.parentIndex(of: treeIndex)]?.value
+                print("remote item at \(treeIndex) ChildIndex: \(childIndex) Parent: \(parent?.value as Any) value: \(oldTree[treeIndex])")
+                outlineView.removeItems(at: [childIndex], inParent: parent, withAnimation: [.effectFade, .slideDown])
+            }
+        }
+        outlineView.endUpdates()
     }
 }
 
