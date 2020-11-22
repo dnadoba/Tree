@@ -52,6 +52,7 @@ class TreeController: NSViewController {
                                 ]),
                                 .init("AD"),
                             ])]
+    var classCache: [Value: Item] = [:]
     var classTree: TreeList<Item> = .init()
     
     private let outlineView = NSOutlineView(frame: NSRect(origin: .zero, size: .init(width: 200, height: 400)))
@@ -79,51 +80,13 @@ class TreeController: NSViewController {
         
         outlineView.registerForDraggedTypes([.string])
     }
-    func applyDiffToClassTree(_ diff: CollectionDifference<TreeNode<Value>>) {
-        let oldTree = classTree
-        var newTree = oldTree
-        
-        outlineView.beginUpdates()
-        for element in diff {
-            print(element)
-            switch element {
-            case let .remove(offset, _, oldOffset):
-                let index = tree.index(tree.startIndex, offsetBy: offset)
-                let parent = newTree[save: tree.parentIndex(of: index)]?.value
-                let childIndex = tree.childIndex(of: index)
-                newTree.remove(at: index)
-                if oldOffset == nil {
-                    outlineView.removeItems(at: [childIndex], inParent: parent, withAnimation: [.effectFade])
-                }
-            case let .insert(offset, node, oldOffset):
-                if let oldOffset = oldOffset {
-                    let newIndex = tree.index(newTree.startIndex, offsetBy: offset)
-                    let newParent = newTree[save: tree.parentIndex(of: newIndex)]?.value
-                    let newChildIndex = tree.childIndex(of: newIndex)
-                    let oldIndex = oldTree.index(oldTree.startIndex, offsetBy: oldOffset)
-                    let oldParent = oldTree[save: oldTree.parentIndex(of: oldIndex)]?.value
-                    let oldChildIndex = oldTree.childIndex(of: oldIndex)
-                    
-                    print("move value \(oldTree[oldIndex].value.value) at \(oldChildIndex) of \(oldParent?.value as Any) to \(newChildIndex) inParent \(newParent?.value as Any)")
-                    
-                    newTree.insert(TreeNode(oldTree[oldIndex].value), at: newIndex)
-                    
-                    outlineView.moveItem(at: oldChildIndex, inParent: oldParent, to: newChildIndex, inParent: newParent)
-                } else {
-                    let newIndex = tree.index(newTree.startIndex, offsetBy: offset)
-                    let parent = newTree[save: tree.parentIndex(of: newIndex)]?.value
-                    let childIndex = tree.childIndex(of: newIndex)
-                    print("insert value \(node.value) at \(childIndex) of \(parent?.value as Any)")
-                    newTree.insert(
-                        TreeNode(Item(node.value)),
-                        at: newIndex
-                    )
-                    outlineView.insertItems(at: [childIndex], inParent: parent, withAnimation: [.effectFade])
-                }
+    func updateClassTree(_ tree: TreeList<Value>) {
+        classTree = tree.mapValues { value in
+            if classCache[value] == nil {
+                classCache[value] = Item(value)
             }
+            return classCache[value]!
         }
-        classTree = newTree
-        outlineView.endUpdates()
     }
     var draggedItems: [Item] = []
     @objc func delete(_ sender: Any) {
@@ -239,7 +202,8 @@ extension TreeController: NSOutlineViewDataSource {
         let diff = newTree.difference(from: tree, by: { $0.value == $1.value }).inferringMoves()
         print(diff)
         tree = newTree
-        applyDiffToClassTree(diff)
+        updateClassTree(tree)
+        
     }
 }
 
