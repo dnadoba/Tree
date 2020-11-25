@@ -16,6 +16,9 @@ extension BidirectionalCollection {
 }
 
 final class NSItem<Value: Hashable>: NSObject {
+    static func ==<Value: Hashable>(lhs: NSItem<Value>, rhs: NSItem<Value>) -> Bool {
+        lhs.value == rhs.value
+    }
     var value: Value
     init(_ value: Value) {
         self.value = value
@@ -241,22 +244,39 @@ extension TreeController: NSOutlineViewDataSource {
         
     }
     func outlineView(_ outlineView: NSOutlineView, acceptDrop info: NSDraggingInfo, item: Any?, childIndex index: Int) -> Bool {
-        let itemIndex = getTreeIndex(for: item)
-        let dropIndex: TreeIndex = {
-            if index < 0 {
-                return itemIndex
-            } else {
-                return tree.addChildIndex(index, to: itemIndex)
-            }
+        let originalDropIndex: TreeIndex = {
+            let itemIndex = getTreeIndex(for: item)
+            let index = index == NSOutlineViewDropOnItemIndex ? 0 : index
+            return tree.addChildIndex(index, to: itemIndex)
         }()
+        let originalParentDropIndex = tree.parentIndex(of: originalDropIndex)
+        let originalChildDropIndex = tree.childIndex(of: originalDropIndex)
+        print("drop item: \(item) index: \(index)")
         let sourceIndices = draggedItems.map(getTreeIndex(for:)).sorted(by: <)
-        modifyTree({
+        modifyTree({ treeSource in
+            var tree = treeSource
+            var childIndex = originalChildDropIndex
             var elements: [TreeNode<Value>] = []
             elements.reserveCapacity(sourceIndices.count)
             for index in sourceIndices.reversed() {
-                elements.append($0.remove(at: index))
+                let currentParentIndex = tree.parentIndex(of: index)
+                let currentChildIndex = tree.childIndex(of: index)
+                if currentParentIndex == originalParentDropIndex &&
+                    currentChildIndex < childIndex {
+                    childIndex -= 1
+                }
+                elements.append(tree.remove(at: index))
             }
-            $0.insert(contentsOf: elements.reversed(), at: dropIndex)
+            func getTreeIndex(for item: Any?) -> TreeIndex {
+                guard let item = item else { return TreeIndex(indices: []) }
+                let id = castToItem(item)
+                return tree.firstIndex(where: { $0.value == id })!
+            }
+            let itemIndex = getTreeIndex(for: item)
+            let dropIndex = tree.addChildIndex(childIndex, to: itemIndex)
+            print(dropIndex)
+            tree.insert(contentsOf: elements.reversed(), at: dropIndex)
+            treeSource = tree
         })
         return true
     }
@@ -266,35 +286,61 @@ extension TreeController: NSOutlineViewDataSource {
         let oldTree = classTree
         updateClassTree(tree)
         let newTree = classTree
-        let diff = newTree.difference(from: oldTree, by: { $0.value == $1.value })
-            //.inferringMoves()
-        print(diff)
         //outlineView.reloadData()
-        outlineView.beginUpdates()
+        outlineView.updateDifferencesBetween(old: oldTree, new: newTree, by: { $0.value == $1.value })
+    }
+}
+
+struct TreeNodeWithParent<Value> {
+    var parent: Value?
+    var value: Value
+}
+
+extension TreeNodeWithParent: Equatable where Value: Equatable {}
+extension TreeNodeWithParent: Hashable where Value: Hashable {}
+
+extension NSOutlineView {
+    func updateDifferencesBetween<Value: AnyObject & Hashable>(old: TreeList<Value>, new: TreeList<Value>, by areEquivalent: (Value, Value) -> Bool) {
+        let new = new.mapValuesWithParents { TreeNodeWithParent(parent: $0.last, value: $1) }
+        print(new)
+        let old = old.mapValuesWithParents { TreeNodeWithParent(parent: $0.last, value: $1) }
+        let diff = new.difference(from: old, by: {
+            (($0.value.parent == nil && $1.value.parent == nil) ||
+            (($0.value.parent != nil && $1.value.parent != nil) &&
+            areEquivalent($0.value.parent!, $1.value.parent!))) &&
+            areEquivalent($0.value.value, $1.value.value)
+            
+        })
+        //.inferringMoves()
+        print(diff)
+            
+        beginUpdates()
         for change in diff {
             switch change {
             case let .insert(offset, _, oldOffset):
-                let newTreeIndex = newTree.index(newTree.startIndex, offsetBy: offset)
-                let newChildIndex = newTree.childIndex(of: newTreeIndex)
-                let newParent = newTree[safe: newTree.parentIndex(of: newTreeIndex)]?.value
+                let newTreeIndex = new.index(new.startIndex, offsetBy: offset)
+                let newChildIndex = new.childIndex(of: newTreeIndex)
+                let newParent = new[safe: new.parentIndex(of: newTreeIndex)]?.value.value
                 if let oldOffset = oldOffset {
-                    let oldTreeIndex = oldTree.index(oldTree.startIndex, offsetBy: oldOffset)
-                    let oldChildIndex = oldTree.childIndex(of: oldTreeIndex)
-                    let oldParent = oldTree[safe: oldTree.parentIndex(of: oldTreeIndex)]?.value
-                    outlineView.moveItem(at: oldChildIndex, inParent: oldParent, to: newChildIndex, inParent: newParent)
+                    let oldTreeIndex = old.index(old.startIndex, offsetBy: oldOffset)
+                    let oldChildIndex = old.childIndex(of: oldTreeIndex)
+                    let oldParent = old[safe: old.parentIndex(of: oldTreeIndex)]?.value.value
+                    print("moveItem(at: \(oldChildIndex), inParent: \(oldParent), to: \(newChildIndex), inParent: \(newParent)")
+                    moveItem(at: oldChildIndex, inParent: oldParent, to: newChildIndex, inParent: newParent)
                 } else {
-                    outlineView.insertItems(at: [newChildIndex], inParent: newParent, withAnimation: [.effectFade, .slideDown])
+                    print("insertItems(at: \(newChildIndex), inParent: \(newParent))")
+                    insertItems(at: [newChildIndex], inParent: newParent, withAnimation: [.effectFade, .slideDown])
                 }
             case let .remove(offset, _, oldOffset):
                 guard oldOffset == nil else { continue }
-                let treeIndex = oldTree.index(oldTree.startIndex, offsetBy: offset)
-                let childIndex = oldTree.childIndex(of: treeIndex)
-                let parent = oldTree[safe: oldTree.parentIndex(of: treeIndex)]?.value
-                print("remote item at \(treeIndex) ChildIndex: \(childIndex) Parent: \(parent?.value as Any) value: \(oldTree[treeIndex])")
-                outlineView.removeItems(at: [childIndex], inParent: parent, withAnimation: [.effectFade, .slideDown])
+                let treeIndex = old.index(old.startIndex, offsetBy: offset)
+                let childIndex = old.childIndex(of: treeIndex)
+                let parent = old[safe: old.parentIndex(of: treeIndex)]?.value.value
+                print("removeItems(at: \(childIndex), inParent: \(parent))")
+                removeItems(at: [childIndex], inParent: parent, withAnimation: [.effectFade, .slideDown])
             }
         }
-        outlineView.endUpdates()
+        endUpdates()
     }
 }
 

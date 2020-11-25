@@ -2,6 +2,9 @@
 public struct TreeIndex {
     public typealias Slice = ArraySlice<Int>
     var indices: [Int]
+    public init(indices: [Int]) {
+        self.indices = indices
+    }
 }
 
 extension TreeIndex: CustomDebugStringConvertible {
@@ -303,6 +306,17 @@ extension TreeNode {
     public func mapValuesWithNode<NewValue>(_ transform: (TreeNode<Value>) -> NewValue) -> TreeNode<NewValue> {
         .init(transform(self), children: children.map { $0.mapValuesWithNode(transform) })
     }
+    public func mapValuesWithParents<NewValue>(_ transform: ([Value], Value) -> NewValue) -> TreeNode<NewValue> {
+        mapValuesWithParents(parents: [], transform)
+    }
+    fileprivate func mapValuesWithParents<NewValue>(
+        parents: [Value],
+        _ transform: ([Value], Value) -> NewValue
+    ) -> TreeNode<NewValue> {
+        let newParents = parents + CollectionOfOne(value)
+        return .init(transform(parents, value),
+                     children: children.map{ $0.mapValuesWithParents(parents: newParents, transform) })
+    }
 }
 
 extension TreeList {
@@ -311,5 +325,8 @@ extension TreeList {
     }
     public func mapValuesWithNode<NewValue>(_ transform: (TreeNode<Value>) -> NewValue) -> TreeList<NewValue> {
         .init(nodes.map({ $0.mapValuesWithNode(transform) }))
+    }
+    public func mapValuesWithParents<NewValue>(_ transform: ([Value], Value) -> NewValue) -> TreeList<NewValue> {
+        .init(nodes.map({ $0.mapValuesWithParents(transform) }))
     }
 }
