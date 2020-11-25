@@ -16,9 +16,6 @@ extension BidirectionalCollection {
 }
 
 final class NSItem<Value: Hashable>: NSObject {
-    static func ==<Value: Hashable>(lhs: NSItem<Value>, rhs: NSItem<Value>) -> Bool {
-        lhs.value == rhs.value
-    }
     var value: Value
     init(_ value: Value) {
         self.value = value
@@ -287,7 +284,7 @@ extension TreeController: NSOutlineViewDataSource {
         updateClassTree(tree)
         let newTree = classTree
         //outlineView.reloadData()
-        outlineView.updateDifferencesBetween(old: oldTree, new: newTree, by: { $0.value == $1.value })
+        outlineView.updateDifferencesBetween(old: oldTree, new: newTree)
     }
 }
 
@@ -296,22 +293,19 @@ struct TreeNodeWithParent<Value> {
     var value: Value
 }
 
+extension TreeNodeWithParent: CustomDebugStringConvertible where Value: CustomDebugStringConvertible {
+    var debugDescription: String { "TNWP(\(parent?.debugDescription ?? "nil") -> \(value.debugDescription)" }
+}
+
 extension TreeNodeWithParent: Equatable where Value: Equatable {}
 extension TreeNodeWithParent: Hashable where Value: Hashable {}
 
 extension NSOutlineView {
-    func updateDifferencesBetween<Value: AnyObject & Hashable>(old: TreeList<Value>, new: TreeList<Value>, by areEquivalent: (Value, Value) -> Bool) {
+    func updateDifferencesBetween<Value: AnyObject & Hashable>(old: TreeList<Value>, new: TreeList<Value>) {
         let new = new.mapValuesWithParents { TreeNodeWithParent(parent: $0.last, value: $1) }
         print(new)
         let old = old.mapValuesWithParents { TreeNodeWithParent(parent: $0.last, value: $1) }
-        let diff = new.difference(from: old, by: {
-            (($0.value.parent == nil && $1.value.parent == nil) ||
-            (($0.value.parent != nil && $1.value.parent != nil) &&
-            areEquivalent($0.value.parent!, $1.value.parent!))) &&
-            areEquivalent($0.value.value, $1.value.value)
-            
-        })
-        //.inferringMoves()
+        let diff = new.difference(from: old, by: { $0.value == $1.value }).inferringMoves()
         print(diff)
             
         beginUpdates()

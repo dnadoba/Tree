@@ -34,6 +34,14 @@ public struct TreeNode<Value> {
 extension TreeNode: Equatable where Value: Equatable {}
 extension TreeNode: Hashable where Value: Hashable {}
 
+extension TreeNode: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        mapValuesWithParents({ parents, value in
+            repeatElement("    ", count: parents.count).joined() + "\(value)"
+        }).lazy.map({ $0.value }).joined(separator: "\n")
+    }
+}
+
 
 extension TreeNode: MutableCollection, BidirectionalCollection {
     public typealias Element = TreeNode<Value>
