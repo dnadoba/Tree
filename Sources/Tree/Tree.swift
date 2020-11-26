@@ -425,7 +425,7 @@ public struct TreeDifference<Value: Hashable> {
                 return a.index.offset < b.index.offset
               case (.remove(_, _, _), .remove(_, _, _)):
                 return a.index.offset > b.index.offset
-                
+
               }
             }
         
@@ -438,7 +438,7 @@ public struct TreeDifference<Value: Hashable> {
             }
             changesMap[parent]!.remove(at: indexOfChange)
         }
-        let changesWithInferredMoves = sortedChanges.map { change -> Change in
+        let changesWithInferredMoves = changes.map { change -> Change in
             switch change {
             case let .insert(index, value, _):
                 let associatedChange = removalMap[value]

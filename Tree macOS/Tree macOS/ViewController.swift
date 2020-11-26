@@ -264,22 +264,43 @@ extension TreeController: NSOutlineViewDataSource {
                 }
                 elements.append(tree.remove(at: index))
             }
-            func getTreeIndex(for item: Any?) -> TreeIndex {
+            func getTreeIndex(for item: Any?) -> TreeIndex? {
                 guard let item = item else { return TreeIndex(indices: []) }
                 let id = castToItem(item)
-                return tree.firstIndex(where: { $0.value == id })!
+                return tree.firstIndex(where: { $0.value == id })
             }
-            let itemIndex = getTreeIndex(for: item)
+            guard let itemIndex = getTreeIndex(for: item) else {
+                return
+            }
             let dropIndex = tree.addChildIndex(childIndex, to: itemIndex)
+            let childrenCountOfItem: Int? = {
+                if item == nil {
+                    return tree.nodes.count
+                }
+                return tree[safe: itemIndex]?.children.count
+            }()
             print(dropIndex)
-            tree.insert(contentsOf: elements.reversed(), at: dropIndex)
-            treeSource = tree
+            if let childrenCountOfItem = childrenCountOfItem,
+               childIndex >= 0, childIndex <= childrenCountOfItem {
+                tree.insert(contentsOf: elements.reversed(), at: dropIndex)
+                treeSource = tree
+            }
         })
         return true
     }
     
     func modifyTree(_ modify: (inout TreeList<Value>) -> ()) {
+        let treeCopy = tree
+        undoManager?.registerUndo(withTarget: self, handler: { ctrl in
+            ctrl.modifyTree({ $0 = treeCopy })
+        })
+        print("Tree Before -----------------------")
+        print(tree)
+        print("-----------------------------------")
         modify(&tree)
+        print("Tree After ------------------------")
+        print(tree)
+        print("-----------------------------------")
         let oldTree = classTree
         updateClassTree(tree)
         let newTree = classTree
