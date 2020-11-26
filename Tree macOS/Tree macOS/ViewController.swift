@@ -302,36 +302,26 @@ extension TreeNodeWithParent: Hashable where Value: Hashable {}
 
 extension NSOutlineView {
     func updateDifferencesBetween<Value: AnyObject & Hashable>(old: TreeList<Value>, new: TreeList<Value>) {
-        let new = new.mapValuesWithParents { TreeNodeWithParent(parent: $0.last, value: $1) }
-        print(new)
-        let old = old.mapValuesWithParents { TreeNodeWithParent(parent: $0.last, value: $1) }
-        let diff = new.difference(from: old, by: { $0.value == $1.value }).inferringMoves()
-        print(diff)
-            
+        let diff = new.difference(from: old).inferringMoves()
         beginUpdates()
-        for change in diff {
+        for change in diff.changes {
+            print(change)
             switch change {
-            case let .insert(offset, _, oldOffset):
-                let newTreeIndex = new.index(new.startIndex, offsetBy: offset)
-                let newChildIndex = new.childIndex(of: newTreeIndex)
-                let newParent = new[safe: new.parentIndex(of: newTreeIndex)]?.value.value
-                if let oldOffset = oldOffset {
-                    let oldTreeIndex = old.index(old.startIndex, offsetBy: oldOffset)
-                    let oldChildIndex = old.childIndex(of: oldTreeIndex)
-                    let oldParent = old[safe: old.parentIndex(of: oldTreeIndex)]?.value.value
-                    print("moveItem(at: \(oldChildIndex), inParent: \(oldParent), to: \(newChildIndex), inParent: \(newParent)")
-                    moveItem(at: oldChildIndex, inParent: oldParent, to: newChildIndex, inParent: newParent)
+            case let .insert(index: newIndex, value: value, associatedWith: oldIndex):
+                if let oldIndex = oldIndex {
+                    print("move \(String(reflecting: value)) from \(oldIndex) to \(newIndex)")
+                    moveItem(at: newIndex.offset, inParent: newIndex.parent, to: oldIndex.offset, inParent: oldIndex.parent)
                 } else {
-                    print("insertItems(at: \(newChildIndex), inParent: \(newParent))")
-                    insertItems(at: [newChildIndex], inParent: newParent, withAnimation: [.effectFade, .slideDown])
+                    print("insert \(String(reflecting: value)) at \(newIndex)")
+                    insertItems(at: [newIndex.offset], inParent: newIndex.parent, withAnimation: [.effectFade, .slideUp])
                 }
-            case let .remove(offset, _, oldOffset):
-                guard oldOffset == nil else { continue }
-                let treeIndex = old.index(old.startIndex, offsetBy: offset)
-                let childIndex = old.childIndex(of: treeIndex)
-                let parent = old[safe: old.parentIndex(of: treeIndex)]?.value.value
-                print("removeItems(at: \(childIndex), inParent: \(parent))")
-                removeItems(at: [childIndex], inParent: parent, withAnimation: [.effectFade, .slideDown])
+                
+            case let .remove(index: newIndex, value: value, associatedWith: oldIndex):
+                guard oldIndex == nil else { continue }
+                
+                print("remove \(String(reflecting: value)) at \(newIndex)")
+                removeItems(at: [newIndex.offset], inParent: newIndex.parent, withAnimation: [.effectFade, .slideDown])
+                
             }
         }
         endUpdates()

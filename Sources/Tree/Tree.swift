@@ -325,6 +325,10 @@ extension TreeNode {
         return .init(transform(parents, value),
                      children: children.map{ $0.mapValuesWithParents(parents: newParents, transform) })
     }
+    fileprivate func mapChildrenWithParent<NewValue>(_ transform: (Value, [Value]) -> NewValue) -> [NewValue] {
+        CollectionOfOne(transform(value, children.map{ $0.value })) +
+            children.flatMap { $0.mapChildrenWithParent(transform) }
+    }
 }
 
 extension TreeList {
@@ -336,5 +340,142 @@ extension TreeList {
     }
     public func mapValuesWithParents<NewValue>(_ transform: ([Value], Value) -> NewValue) -> TreeList<NewValue> {
         .init(nodes.map({ $0.mapValuesWithParents(transform) }))
+    }
+    public func mapChildrenWithParent<NewValue>(_ transform: (Value?, [Value]) -> NewValue) -> [NewValue] {
+        CollectionOfOne(transform(nil, nodes.map{ $0.value })) +
+            nodes.flatMap { node in
+                node.mapChildrenWithParent(transform)
+            }
+    }
+}
+
+public struct TreeDifference<Value: Hashable> {
+    public struct Index: Equatable {
+        public var parent: Value?
+        public var offset: Int
+    }
+    public enum Change: Equatable {
+        case insert(index: Index, value: Value, associatedWith: Index?)
+        case remove(index: Index, value: Value, associatedWith: Index?)
+        internal var index: Index {
+            get {
+                switch self {
+                case .insert(index: let i, value: _, associatedWith: _):
+                    return i
+                case .remove(index: let i, value: _, associatedWith: _):
+                    return i
+                }
+            }
+        }
+        internal var value: Value {
+            get {
+                switch self {
+                case .insert(index: _, value: let v, associatedWith: _):
+                    return v
+                case .remove(index: _, value: let v, associatedWith: _):
+                    return v
+                }
+            }
+        }
+        internal var isInsert: Bool {
+            guard case .insert = self else { return false }
+            return true
+        }
+        internal var isRemove: Bool {
+            guard case .remove = self else { return false }
+            return true
+        }
+    }
+    public var changes: [Change]
+    public var insertions: [Change] { changes.filter { change in
+        guard case .insert = change else { return false }
+        return true
+    } }
+    public var removals: [Change] { changes.filter { change in
+        guard case .remove = change else { return false }
+        return true
+    } }
+    
+    public func inferringMoves() -> TreeDifference<Value> {
+        let removalMap = Dictionary(uniqueKeysWithValues: removals.map{ ($0.value, $0) })
+        let insertionMap = Dictionary(uniqueKeysWithValues: insertions.map{ ($0.value, $0) })
+        var changesMap = Dictionary(grouping: changes, by: \.index.parent)
+        func offsetChanges(inParent parent: Value?, for change: Change) -> Int {
+            let changesOfParent = changesMap[parent]!
+            let indexOfChange = changesOfParent.firstIndex(of: change)!
+            let offset = changesOfParent[..<indexOfChange].reduce(0) { (offset, change) in
+                offset + (change.isRemove ? -1 : 1)
+            }
+            changesMap[parent]!.remove(at: indexOfChange)
+            return offset
+        }
+        let changesWithInferredMoves = changes.map { change -> Change in
+            switch change {
+            case let .insert(index, value, _):
+                let associatedOperation: Index? = {
+                    guard let associatedChange = removalMap[value] else {
+                        return nil
+                    }
+                    var index = associatedChange.index
+                    index.offset -= offsetChanges(inParent: index.parent, for: associatedChange)
+                    return index
+                }()
+                
+                return .insert(index: index, value: value, associatedWith: associatedOperation)
+            case let .remove(index, value, _):
+                let associatedOperation: Index? = {
+                    guard let associatedChange = insertionMap[value] else {
+                        return nil
+                    }
+                    var index = associatedChange.index
+                    index.offset += offsetChanges(inParent: index.parent, for: associatedChange)
+                    return index
+                }()
+                return .remove(index: index, value: value, associatedWith: associatedOperation)
+            }
+        }
+        return .init(changes: changesWithInferredMoves)
+    }
+}
+
+extension TreeDifference.Index: CustomDebugStringConvertible where Value: CustomDebugStringConvertible{
+    public var debugDescription: String {
+        "\(parent?.debugDescription ?? "") at \(offset)"
+    }
+}
+
+extension TreeDifference.Change: CustomDebugStringConvertible where Value: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        switch self {
+        case let .insert(index: index, value: value, associatedWith: associatedWith):
+            return "insert(index: \(index), value: \(value.debugDescription), associatedWith: \(associatedWith?.debugDescription ?? "nil")"
+        case let .remove(index: index, value: value, associatedWith: associatedWith):
+            return "remove(index: \(index), value: \(value.debugDescription), associatedWith: \(associatedWith?.debugDescription ?? "nil")"
+        }
+    }
+}
+
+
+extension TreeList where Value: Hashable {
+    public func difference(from old: Self) -> TreeDifference<Value> {
+        let new = self
+        let mapNew = Dictionary(uniqueKeysWithValues: new.mapChildrenWithParent({ ($0, $1) }))
+        let mapOld = Dictionary(uniqueKeysWithValues: old.mapChildrenWithParent({ ($0, $1) }))
+        
+        let keys = Set(mapNew.keys).union(mapOld.keys)
+        
+        let changes = keys.flatMap { parent -> [TreeDifference<Value>.Change] in
+            let new = mapNew[parent] ?? []
+            let old = mapOld[parent] ?? []
+            return new.difference(from: old).map { change -> TreeDifference<Value>.Change in
+                switch change {
+                case let .insert(offset, value, _):
+                    return .insert(index: .init(parent: parent, offset: offset), value: value, associatedWith: nil)
+                case let .remove(offset, value, _):
+                    return .remove(index: .init(parent: parent, offset: offset), value: value, associatedWith: nil)
+                }
+            }
+        }
+        return .init(changes: changes)
     }
 }
