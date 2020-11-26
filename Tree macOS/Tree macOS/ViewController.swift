@@ -310,7 +310,7 @@ extension NSOutlineView {
             case let .insert(index: newIndex, value: value, associatedWith: oldIndex):
                 if let oldIndex = oldIndex {
                     print("move \(String(reflecting: value)) from \(oldIndex) to \(newIndex)")
-                    moveItem(at: newIndex.offset, inParent: newIndex.parent, to: oldIndex.offset, inParent: oldIndex.parent)
+                    moveItem(at: oldIndex.offset, inParent: oldIndex.parent, to: newIndex.offset, inParent: newIndex.parent)
                 } else {
                     print("insert \(String(reflecting: value)) at \(newIndex)")
                     insertItems(at: [newIndex.offset], inParent: newIndex.parent, withAnimation: [.effectFade, .slideUp])

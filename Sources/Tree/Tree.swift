@@ -366,6 +366,14 @@ public struct TreeDifference<Value: Hashable> {
                     return i
                 }
             }
+            set {
+                switch self {
+                case let .insert(_, value, associatedWith):
+                    self = .insert(index: newValue, value: value, associatedWith: associatedWith)
+                case let .remove(_, value, associatedWith):
+                    self = .remove(index: newValue, value: value, associatedWith: associatedWith)
+                }
+            }
         }
         internal var value: Value {
             get {
@@ -397,41 +405,43 @@ public struct TreeDifference<Value: Hashable> {
     } }
     
     public func inferringMoves() -> TreeDifference<Value> {
-        let removalMap = Dictionary(uniqueKeysWithValues: removals.map{ ($0.value, $0) })
+        var removalMap = Dictionary(uniqueKeysWithValues: removals.map{ ($0.value, $0) })
         let insertionMap = Dictionary(uniqueKeysWithValues: insertions.map{ ($0.value, $0) })
+        let sortedChanges = changes.sorted { (a, b) -> Bool in
+              switch (a, b) {
+              case (.remove(_, _, _), .insert(_, _, _)):
+                return true
+              case (.insert(_, _, _), .remove(_, _, _)):
+                return false
+              case (.insert(_, _, _), .insert(_, _, _)):
+                return a.index.offset < b.index.offset
+              case (.remove(_, _, _), .remove(_, _, _)):
+                return a.index.offset > b.index.offset
+                
+              }
+            }
+        
         var changesMap = Dictionary(grouping: changes, by: \.index.parent)
-        func offsetChanges(inParent parent: Value?, for change: Change) -> Int {
-            let changesOfParent = changesMap[parent]!
-            let indexOfChange = changesOfParent.firstIndex(of: change)!
-            let offset = changesOfParent[..<indexOfChange].reduce(0) { (offset, change) in
-                offset + (change.isRemove ? -1 : 1)
+        func fixEarlyAssociatedChanges(for change: Change) {
+            let parent = change.index.parent
+            let indexOfChange = changesMap[parent]!.firstIndex { $0.isRemove == true && $0.value == change.value  }!
+            changesMap[parent]![..<indexOfChange].forEach { change in
+                removalMap[change.value]!.index.offset -= 1
             }
             changesMap[parent]!.remove(at: indexOfChange)
-            return offset
         }
-        let changesWithInferredMoves = changes.map { change -> Change in
+        let changesWithInferredMoves = sortedChanges.map { change -> Change in
             switch change {
             case let .insert(index, value, _):
-                let associatedOperation: Index? = {
-                    guard let associatedChange = removalMap[value] else {
-                        return nil
-                    }
-                    var index = associatedChange.index
-                    index.offset -= offsetChanges(inParent: index.parent, for: associatedChange)
-                    return index
-                }()
+                let associatedChange = removalMap[value]
+                if let associatedChange = associatedChange {
+                    fixEarlyAssociatedChanges(for: associatedChange)
+                }
                 
-                return .insert(index: index, value: value, associatedWith: associatedOperation)
+                return .insert(index: index, value: value, associatedWith: associatedChange?.index)
             case let .remove(index, value, _):
-                let associatedOperation: Index? = {
-                    guard let associatedChange = insertionMap[value] else {
-                        return nil
-                    }
-                    var index = associatedChange.index
-                    index.offset += offsetChanges(inParent: index.parent, for: associatedChange)
-                    return index
-                }()
-                return .remove(index: index, value: value, associatedWith: associatedOperation)
+                let associatedChange = insertionMap[value]
+                return .remove(index: index, value: value, associatedWith: associatedChange?.index)
             }
         }
         return .init(changes: changesWithInferredMoves)
@@ -451,6 +461,14 @@ extension TreeDifference.Change: CustomDebugStringConvertible where Value: Custo
             return "insert(index: \(index), value: \(value.debugDescription), associatedWith: \(associatedWith?.debugDescription ?? "nil")"
         case let .remove(index: index, value: value, associatedWith: associatedWith):
             return "remove(index: \(index), value: \(value.debugDescription), associatedWith: \(associatedWith?.debugDescription ?? "nil")"
+        }
+    }
+}
+
+extension MutableCollection {
+    mutating func mapInPlace(_ transform: (inout Element) -> ()) {
+        for index in self.indices {
+            transform(&self[index])
         }
     }
 }
