@@ -289,6 +289,14 @@ extension TreeList {
     }
 }
 
+extension TreeList: CustomDebugStringConvertible where Value: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        return mapValuesWithParents({ parents, value -> String in
+            repeatElement("  ", count: parents.count).joined() + "- \(value.debugDescription)"
+        }).map(\.value).joined(separator: "\n")
+    }
+}
+
 extension TreeList {
     public mutating func insert(_ element: TreeNode<Value>, at index: TreeIndex) {
         insert(contentsOf: CollectionOfOne(element), at: index)
@@ -465,14 +473,6 @@ extension TreeDifference.Change: CustomDebugStringConvertible where Value: Custo
     }
 }
 
-extension MutableCollection {
-    mutating func mapInPlace(_ transform: (inout Element) -> ()) {
-        for index in self.indices {
-            transform(&self[index])
-        }
-    }
-}
-
 
 extension TreeList where Value: Hashable {
     public func difference(from old: Self) -> TreeDifference<Value> {
@@ -495,5 +495,43 @@ extension TreeList where Value: Hashable {
             }
         }
         return .init(changes: changes)
+    }
+}
+
+extension TreeList where Value: Hashable {
+    internal func firstIndex(of i: TreeDifference<Value>.Index) -> TreeIndex? {
+        guard let treeIndex = i.parent.map({ parent in firstIndex(where: { $0.value ==  parent}) }) ?? TreeIndex(indices: []) else {
+            return nil
+        }
+        return addChildIndex(i.offset, to: treeIndex)
+    }
+    public func applying(_ diff: TreeDifference<Value>) -> Self? {
+        var tree = self
+        for change in diff.changes {
+            switch change {
+            case let .remove(index, _, associatedWith):
+                guard associatedWith == nil else { continue}
+                guard let treeIndex = tree.firstIndex(of: index) else { continue }
+                if tree.indices.contains(treeIndex) {
+                    tree.remove(at: treeIndex)
+                }
+            case let .insert(destinationIndex, value, associatedWith):
+                guard let destinationTreeIndex = tree.firstIndex(of: destinationIndex) else {
+                    print("could not find parent of insert index \(destinationIndex)")
+                    return nil
+                }
+                if let sourceIndex = associatedWith {
+                    guard let sourceTreeIndex = tree.firstIndex(of: sourceIndex) else {
+                        print("could not find parent of insert index \(destinationIndex)")
+                        return nil
+                    }
+                    let value = tree.remove(at: sourceTreeIndex)
+                    tree.insert(value, at: destinationTreeIndex)
+                } else {
+                    tree.insert(TreeNode(value), at: destinationTreeIndex)
+                }
+            }
+        }
+        return tree
     }
 }
