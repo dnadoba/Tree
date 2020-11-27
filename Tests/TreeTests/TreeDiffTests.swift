@@ -110,4 +110,34 @@ final class TreeDiffTests: XCTestCase {
             """
         )
     }
+    func test1() {
+        calculateAndApplyDifference("""
+            - A
+              - AA
+              - ACA
+              - ACC
+              - AB
+              - ACB
+              - AC
+                - ACD
+                  - ACDB
+                  - ACDC
+              - ACDA
+              - AD
+            """,
+            """
+            - A
+              - AA
+              - ACA
+              - ACB
+              - ACC
+              - AB
+              - AC
+                - ACD
+                  - ACDA
+                  - ACDB
+                  - ACDC
+              - AD
+            """)
+    }
 }

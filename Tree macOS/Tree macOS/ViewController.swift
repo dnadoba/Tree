@@ -305,7 +305,7 @@ extension TreeController: NSOutlineViewDataSource {
         updateClassTree(tree)
         let newTree = classTree
         //outlineView.reloadData()
-        outlineView.updateDifferencesBetween(old: oldTree, new: newTree)
+        outlineView.updateDifferencesBetween(old: oldTree, new: newTree, shouldExpandNewTrees: true)
     }
 }
 
@@ -322,9 +322,11 @@ extension TreeNodeWithParent: Equatable where Value: Equatable {}
 extension TreeNodeWithParent: Hashable where Value: Hashable {}
 
 extension NSOutlineView {
-    func updateDifferencesBetween<Value: AnyObject & Hashable>(old: TreeList<Value>, new: TreeList<Value>) {
+    func updateDifferencesBetween<Value: AnyObject & Hashable>(old: TreeList<Value>, new: TreeList<Value>, shouldExpandNewTrees: Bool = false) {
         let diff = new.difference(from: old).inferringMoves()
         beginUpdates()
+        let newIsLeaf = Dictionary(uniqueKeysWithValues: new.mapChildrenWithParent({ ($0, $1.count == 0) }))
+        let oldIsLeaf = Dictionary(uniqueKeysWithValues: old.mapChildrenWithParent({ ($0, $1.count == 0) }))
         for change in diff.changes {
             print(change)
             switch change {
@@ -345,7 +347,17 @@ extension NSOutlineView {
                 
             }
         }
+        
         endUpdates()
+        for (item, isLeaf) in newIsLeaf {
+            let wasLeaf = oldIsLeaf[item] ?? false
+            if isLeaf != wasLeaf {
+                reloadItem(item)
+                if !isLeaf && shouldExpandNewTrees {
+                    expandItem(item)
+                }
+            }
+        }
     }
 }
 
