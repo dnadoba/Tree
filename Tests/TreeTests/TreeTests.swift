@@ -1,6 +1,19 @@
 import XCTest
 @testable import Tree
 
+struct Pair<First, Second> {
+    init(_ first: First, _ second: Second) {
+        self.first = first
+        self.second = second
+    }
+    
+    var first: First
+    var second: Second
+}
+
+extension Pair: Equatable where First: Equatable, Second: Equatable {}
+extension Pair: Hashable where First: Hashable, Second: Hashable {}
+
 final class TreeTests: XCTestCase {
     func testIndexAfter() {
         let tree = TreeNode(
@@ -193,5 +206,24 @@ final class TreeTests: XCTestCase {
                     .init("AD"),
             ])]
         )
+    }
+    func testMapChildrenWithParents() {
+        let tree: TreeList = """
+        - A
+          - B
+          - C
+            - D
+            - E
+          - F
+        """
+        XCTAssertEqual(tree.mapChildrenWithParents({ Pair($0, $1) }), [
+            Pair([], ["A"]),
+            Pair(["A"], ["B", "C", "F"]),
+            Pair(["A", "B"], []),
+            Pair(["A", "C"], ["D", "E"]),
+            Pair(["A", "C", "D"], []),
+            Pair(["A", "C", "E"], []),
+            Pair(["A", "F"], []),
+        ])
     }
 }

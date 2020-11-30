@@ -39,7 +39,7 @@ extension TreeList where Value == String {
             let newDepth = line[..<firstNonemptyIndex].count / 2
             
             let lastIndex: TreeIndex = {
-                if tree.endIndex == tree.startIndex {
+                if tree.isEmpty {
                     return TreeIndex(indices: [-1])
                 } else {
                     return tree.index(before: tree.endIndex)
@@ -50,7 +50,7 @@ extension TreeList where Value == String {
                 if currentDepth < newDepth {
                     return tree.addChildIndex(0, to: lastIndex)
                 } else if currentDepth > newDepth {
-                    return tree.parentIndex(of: lastIndex, nthParent: currentDepth - newDepth)
+                    return tree.indexInParent(after: tree.parentIndex(of: lastIndex, nthParent: currentDepth - newDepth))
                 } else {
                     return tree.indexInParent(after: lastIndex)
                 }
@@ -78,7 +78,17 @@ final class TreeDiffTests: XCTestCase {
         file: StaticString = #file,
         line: UInt = #line
     ) {
-        XCTAssertEqual(tree1.applying(tree2.difference(from: tree1).inferringMoves()), tree2, file: file, line: line)
+        let diff = tree2.difference(from: tree1)
+        for change in diff.changes {
+            print(change)
+        }
+        print("")
+        let diffWithMovements = diff.inferringMoves()
+        for change in diffWithMovements.changes {
+            print(change)
+        }
+        print("")
+        XCTAssertEqual(tree1.applying(diffWithMovements), tree2, file: file, line: line)
     }
     func testTreeDiff() {
         calculateAndApplyDifference("""
@@ -98,6 +108,9 @@ final class TreeDiffTests: XCTestCase {
           - G
         """
         )
+        
+    }
+    func testEmpty() {
         calculateAndApplyDifference(
             .init(),
             """
@@ -139,5 +152,64 @@ final class TreeDiffTests: XCTestCase {
                   - ACDC
               - AD
             """)
+    }
+    func test2() {
+        calculateAndApplyDifference("""
+            - A
+              - AA
+              - AB
+              - AC
+                - ACA
+                - ACB
+                - ACC
+                - ACD
+                  - ACDA
+                  - ACDB
+                  - ACDC
+              - AD
+            """, """
+            - A
+              - AA
+              - AB
+              - AC
+                - ACA
+                - ACB
+                - ACD
+                  - ACDA
+                  - ACDB
+                  - ACDC
+                - ACC
+              - AD
+            """)
+    }
+    func test3() {
+        calculateAndApplyDifference("""
+         - A
+           - AC
+             - ACA
+             - ACB
+             - ACC
+             - ACD
+               - ACDA
+               - ACDB
+               - ACDC
+           - AA
+           - AB
+           - AD
+        """, """
+        - AC
+            - ACA
+            - ACB
+            - ACC
+            - ACD
+            - ACDA
+            - ACDB
+            - ACDC
+        - AA
+        - A
+            - AB
+            - AD
+        """
+        )
     }
 }
