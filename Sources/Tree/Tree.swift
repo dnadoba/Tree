@@ -459,11 +459,11 @@ public struct TreeDifference<Value: Hashable> {
         var removalMap = Dictionary(uniqueKeysWithValues: removals.map{ ($0.value, $0) })
         var insertionMap = Dictionary(uniqueKeysWithValues: insertions.map{ ($0.value, $0) })
         
-        let changesMap = Dictionary(grouping: changes, by: \.index.parent)
+        var changesMap = Dictionary(grouping: changes, by: \.index.parent)
         func fixEarlyAssociatedChanges(for change: Change, offsetChange: Int) {
             let parent = change.index.parent
             changesMap[parent]!.filter {
-                $0.isInsert && $0.index.offset >= change.index.offset
+                $0.isInsert && $0.index.offset > change.index.offset
             }.forEach { change in
                 insertionMap[change.value]!.index.offset += offsetChange
             }
@@ -472,16 +472,18 @@ public struct TreeDifference<Value: Hashable> {
                 changesMap[parent]![..<indexOfChange].forEach { change in
                     removalMap[change.value]!.index.offset -= 1
                 }
+                changesMap[parent]!.remove(at: indexOfChange)
             }
         }
         let changesWithInferredMoves = changes.map { change -> Change in
             switch change {
             case let .insert(_, value, _):
+                let associatedChange = removalMap[value]
                 if let associatedChange = removalMap[value] {
                     fixEarlyAssociatedChanges(for: associatedChange, offsetChange: -1)
                 }
                 let index = insertionMap[value]!.index
-                return .insert(index: index, value: value, associatedWith: removalMap[value]?.index)
+                return .insert(index: index, value: value, associatedWith: associatedChange?.index)
             case let .remove(index, value, _):
                 let associatedChange = insertionMap[value]
                 if let _ = associatedChange {
