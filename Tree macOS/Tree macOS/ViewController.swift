@@ -305,30 +305,45 @@ extension TreeController: NSOutlineViewDataSource {
         updateClassTree(tree)
         let newTree = classTree
         //outlineView.reloadData()
-        let diff = newTree.difference(from: oldTree)
+        let diff = newTree.difference(from: oldTree).inferringMoves()
         outlineView.animateChanges(diff)
         outlineView.expandNewSubtrees(old: oldTree, new: newTree)
     }
 }
 
+fileprivate extension TreeDifference {
+    var isSingleMove: Bool {
+        guard changes.count == 2 else { return false }
+        guard case let .remove(_, _, insertPosition) = changes.first else { return false }
+        return insertPosition != nil
+    }
+}
+
 extension NSOutlineView {
-    func animateChanges<Value>(
+    func animateChanges<Value: NSObject>(
         _ diff: TreeDifference<Value>,
         removeAnimation: NSTableView.AnimationOptions = [.effectFade, .slideUp],
         insertAnimation: NSTableView.AnimationOptions = [.effectFade, .slideDown]
     ) {
         beginUpdates()
-        for change in diff.changes {
-            switch change {
-            case let .insert(newIndex, _, _):
-                insertItems(at: [newIndex.offset], inParent: newIndex.parent, withAnimation: [.effectFade, .slideUp])
-            case let .remove(newIndex, _, _):
-                removeItems(at: [newIndex.offset], inParent: newIndex.parent, withAnimation: [.effectFade, .slideDown])
+        // currently, we can only safely animate a single move
+        if diff.isSingleMove,
+           case let .insert(newIndex, _, oldIndexOptional) = diff.changes.last,
+           let oldIndex = oldIndexOptional {
+            moveItem(at: oldIndex.offset, inParent: oldIndex.parent, to: newIndex.offset, inParent: newIndex.parent)
+        } else {
+            for change in diff.changes {
+                switch change {
+                case let .insert(newIndex, _, _):
+                    insertItems(at: [newIndex.offset], inParent: newIndex.parent, withAnimation: [.effectFade, .slideUp])
+                case let .remove(newIndex, _, _):
+                    removeItems(at: [newIndex.offset], inParent: newIndex.parent, withAnimation: [.effectFade, .slideDown])
+                }
             }
         }
         endUpdates()
     }
-    func expandNewSubtrees<Value: Hashable>(old: TreeList<Value>, new: TreeList<Value>) {
+    func expandNewSubtrees<Value: NSObject>(old: TreeList<Value>, new: TreeList<Value>) {
         let newIsLeaf = Dictionary(uniqueKeysWithValues: new.mapChildrenWithParent({ ($0, $1.count == 0) }))
         let oldIsLeaf = Dictionary(uniqueKeysWithValues: old.mapChildrenWithParent({ ($0, $1.count == 0) }))
         for (item, isLeaf) in newIsLeaf {
