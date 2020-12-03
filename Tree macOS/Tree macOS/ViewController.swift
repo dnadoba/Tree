@@ -305,55 +305,37 @@ extension TreeController: NSOutlineViewDataSource {
         updateClassTree(tree)
         let newTree = classTree
         //outlineView.reloadData()
-        outlineView.updateDifferencesBetween(old: oldTree, new: newTree, shouldExpandNewTrees: true)
+        let diff = newTree.difference(from: oldTree)
+        outlineView.animateChanges(diff)
+        outlineView.expandNewSubtrees(old: oldTree, new: newTree)
     }
 }
 
-struct TreeNodeWithParent<Value> {
-    var parent: Value?
-    var value: Value
-}
-
-extension TreeNodeWithParent: CustomDebugStringConvertible where Value: CustomDebugStringConvertible {
-    var debugDescription: String { "TNWP(\(parent?.debugDescription ?? "nil") -> \(value.debugDescription)" }
-}
-
-extension TreeNodeWithParent: Equatable where Value: Equatable {}
-extension TreeNodeWithParent: Hashable where Value: Hashable {}
-
 extension NSOutlineView {
-    func updateDifferencesBetween<Value: AnyObject & Hashable>(old: TreeList<Value>, new: TreeList<Value>, shouldExpandNewTrees: Bool = false) {
-        let diff = new.difference(from: old).inferringMoves()
+    func animateChanges<Value>(
+        _ diff: TreeDifference<Value>,
+        removeAnimation: NSTableView.AnimationOptions = [.effectFade, .slideUp],
+        insertAnimation: NSTableView.AnimationOptions = [.effectFade, .slideDown]
+    ) {
         beginUpdates()
-        let newIsLeaf = Dictionary(uniqueKeysWithValues: new.mapChildrenWithParent({ ($0, $1.count == 0) }))
-        let oldIsLeaf = Dictionary(uniqueKeysWithValues: old.mapChildrenWithParent({ ($0, $1.count == 0) }))
         for change in diff.changes {
-            print(change)
             switch change {
-            case let .insert(index: newIndex, value: value, associatedWith: oldIndex):
-                if let oldIndex = oldIndex {
-                    print("move \(String(reflecting: value)) from \(oldIndex) to \(newIndex)")
-                    moveItem(at: oldIndex.offset, inParent: oldIndex.parent, to: newIndex.offset, inParent: newIndex.parent)
-                } else {
-                    print("insert \(String(reflecting: value)) at \(newIndex)")
-                    insertItems(at: [newIndex.offset], inParent: newIndex.parent, withAnimation: [.effectFade, .slideUp])
-                }
-                
-            case let .remove(index: newIndex, value: value, associatedWith: oldIndex):
-                guard oldIndex == nil else { continue }
-                
-                print("remove \(String(reflecting: value)) at \(newIndex)")
+            case let .insert(newIndex, _, _):
+                insertItems(at: [newIndex.offset], inParent: newIndex.parent, withAnimation: [.effectFade, .slideUp])
+            case let .remove(newIndex, _, _):
                 removeItems(at: [newIndex.offset], inParent: newIndex.parent, withAnimation: [.effectFade, .slideDown])
-                
             }
         }
-        
         endUpdates()
+    }
+    func expandNewSubtrees<Value: Hashable>(old: TreeList<Value>, new: TreeList<Value>) {
+        let newIsLeaf = Dictionary(uniqueKeysWithValues: new.mapChildrenWithParent({ ($0, $1.count == 0) }))
+        let oldIsLeaf = Dictionary(uniqueKeysWithValues: old.mapChildrenWithParent({ ($0, $1.count == 0) }))
         for (item, isLeaf) in newIsLeaf {
             let wasLeaf = oldIsLeaf[item] ?? false
             if isLeaf != wasLeaf {
                 reloadItem(item)
-                if !isLeaf && shouldExpandNewTrees {
+                if !isLeaf {
                     expandItem(item)
                 }
             }

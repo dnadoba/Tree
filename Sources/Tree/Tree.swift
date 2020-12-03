@@ -456,40 +456,15 @@ public struct TreeDifference<Value: Hashable> {
     }
     
     public func inferringMoves() -> TreeDifference<Value> {
-        var removalMap = Dictionary(uniqueKeysWithValues: removals.map{ ($0.value, $0) })
-        var insertionMap = Dictionary(uniqueKeysWithValues: insertions.map{ ($0.value, $0) })
+        let removalMap = Dictionary(uniqueKeysWithValues: removals.map{ ($0.value, $0) })
+        let insertionMap = Dictionary(uniqueKeysWithValues: insertions.map{ ($0.value, $0) })
         
-        var changesMap = Dictionary(grouping: changes, by: \.index.parent)
-        func fixEarlyAssociatedChanges(for change: Change, offsetChange: Int) {
-            let parent = change.index.parent
-            changesMap[parent]!.filter {
-                $0.isInsert && $0.index.offset > change.index.offset
-            }.forEach { change in
-                insertionMap[change.value]!.index.offset += offsetChange
-            }
-            if offsetChange == -1 {
-                let indexOfChange = changesMap[parent]!.firstIndex { $0.isRemove == true && $0.value == change.value  }!
-                changesMap[parent]![..<indexOfChange].forEach { change in
-                    removalMap[change.value]!.index.offset -= 1
-                }
-                changesMap[parent]!.remove(at: indexOfChange)
-            }
-        }
         let changesWithInferredMoves = changes.map { change -> Change in
             switch change {
-            case let .insert(_, value, _):
-                let associatedChange = removalMap[value]
-                if let associatedChange = removalMap[value] {
-                    fixEarlyAssociatedChanges(for: associatedChange, offsetChange: -1)
-                }
-                let index = insertionMap[value]!.index
-                return .insert(index: index, value: value, associatedWith: associatedChange?.index)
+            case let .insert(index, value, _):
+                return .insert(index: index, value: value, associatedWith: removalMap[value]?.index)
             case let .remove(index, value, _):
-                let associatedChange = insertionMap[value]
-                if let _ = associatedChange {
-                    fixEarlyAssociatedChanges(for: change, offsetChange: 1)
-                }
-                return .remove(index: index, value: value, associatedWith: associatedChange?.index)
+                return .remove(index: index, value: value, associatedWith: insertionMap[value]?.index)
             }
         }
         return .init(changes: changesWithInferredMoves.sorted { (a, b) -> Bool in
@@ -577,35 +552,29 @@ extension TreeList where Value: Hashable {
     }
     public func applying(_ diff: TreeDifference<Value>) -> Self? {
         var tree = self
+        var removedNodes = [Value:TreeNode<Value>]()
         for change in diff.changes {
             switch change {
-            case let .remove(index, _, associatedWith):
-                guard associatedWith == nil else { continue}
+            case let .remove(index, value, associatedWith):
                 guard let treeIndex = tree.firstIndex(of: index) else { continue }
                 if tree.indices.contains(treeIndex) {
-                    print(change)
-                    tree.remove(at: treeIndex)
+                    let node = tree.remove(at: treeIndex)
+                    if associatedWith != nil {
+                        removedNodes[value] = node
+                    }
                 }
             case let .insert(destinationIndex, value, associatedWith):
-                print(change)
-                
-                if let sourceIndex = associatedWith {
-                    
-                    guard let sourceTreeIndex = tree.firstIndex(of: sourceIndex) else {
-                        print("could not find parent")
+                guard let destinationTreeIndex = tree.firstIndex(of: destinationIndex) else {
+                    print("could not find parent of insert index \(destinationIndex)")
+                    return nil
+                }
+                if associatedWith != nil {
+                    guard let removedNode = removedNodes[value] else {
+                        print("could not find source node for value \(value)")
                         return nil
                     }
-                    let value = tree.remove(at: sourceTreeIndex)
-                    guard let destinationTreeIndex = tree.firstIndex(of: destinationIndex) else {
-                        print("could not find parent of insert index \(destinationIndex)")
-                        return nil
-                    }
-                    tree.insert(value, at: destinationTreeIndex)
+                    tree.insert(removedNode, at: destinationTreeIndex)
                 } else {
-                    guard let destinationTreeIndex = tree.firstIndex(of: destinationIndex) else {
-                        print("could not find parent of insert index \(destinationIndex)")
-                        return nil
-                    }
                     tree.insert(TreeNode(value), at: destinationTreeIndex)
                 }
             }
