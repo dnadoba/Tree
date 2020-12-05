@@ -248,7 +248,6 @@ extension TreeController: NSOutlineViewDataSource {
         }()
         let originalParentDropIndex = tree.parentIndex(of: originalDropIndex)
         let originalChildDropIndex = tree.childIndex(of: originalDropIndex)
-        print("drop item: \(item) index: \(index)")
         let sourceIndices = draggedItems.map(getTreeIndex(for:)).sorted(by: <)
         modifyTree({ treeSource in
             var tree = treeSource
@@ -279,7 +278,6 @@ extension TreeController: NSOutlineViewDataSource {
                 }
                 return tree[safe: itemIndex]?.children.count
             }()
-            print(dropIndex)
             if let childrenCountOfItem = childrenCountOfItem,
                childIndex >= 0, childIndex <= childrenCountOfItem {
                 tree.insert(contentsOf: elements.reversed(), at: dropIndex)
@@ -294,13 +292,8 @@ extension TreeController: NSOutlineViewDataSource {
         undoManager?.registerUndo(withTarget: self, handler: { ctrl in
             ctrl.modifyTree({ $0 = treeCopy })
         })
-        print("Tree Before -----------------------")
-        print(tree)
-        print("-----------------------------------")
+
         modify(&tree)
-        print("Tree After ------------------------")
-        print(tree)
-        print("-----------------------------------")
         let oldTree = classTree
         updateClassTree(tree)
         let newTree = classTree

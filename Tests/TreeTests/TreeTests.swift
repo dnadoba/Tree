@@ -58,11 +58,8 @@ final class TreeTests: XCTestCase {
                 .init("AD"),
         ])
         
-        print(tree.endIndex)
         var index = tree.index(before: tree.endIndex)
         while index > tree.startIndex {
-            print(index)
-            print(tree[index].value)
             index = tree.index(before: index)
         }
         
@@ -172,7 +169,6 @@ final class TreeTests: XCTestCase {
         tree.insert(contentsOf: ["A", "B", "C"].map{ TreeNode($0) }, at: tree.startIndex)
         XCTAssertEqual(tree.map(\.value), ["A", "B", "C"])
         XCTAssertEqual(tree, TreeList([.init("A"), .init("B"), .init("C")]))
-        print(tree)
     }
     
     func testDiffing() {

@@ -75,19 +75,24 @@ final class TreeDiffTests: XCTestCase {
     func calculateAndApplyDifference(
         _ tree1: TreeList<String>,
         _ tree2: TreeList<String>,
+        debugPrint: Bool = false,
         file: StaticString = #file,
         line: UInt = #line
     ) {
         let diff = tree2.difference(from: tree1)
-        for change in diff.changes {
-            print(change)
+        if debugPrint {
+            for change in diff.changes {
+                print(change)
+            }
+            print("")
         }
-        print("")
         let diffWithMovements = diff.inferringMoves()
-        for change in diffWithMovements.changes {
-            print(change)
+        if debugPrint {
+            for change in diffWithMovements.changes {
+                print(change)
+            }
+            print("")
         }
-        print("")
         XCTAssertEqual(tree1.applying(diffWithMovements), tree2, file: file, line: line)
     }
     func testTreeDiff() {
