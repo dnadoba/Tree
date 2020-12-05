@@ -556,7 +556,9 @@ extension TreeList where Value: Hashable {
         for change in diff.changes {
             switch change {
             case let .remove(index, value, associatedWith):
-                guard let treeIndex = tree.firstIndex(of: index) else { continue }
+                guard let treeIndex = tree.firstIndex(of: index) else {
+                    return nil
+                }
                 if tree.indices.contains(treeIndex) {
                     let node = tree.remove(at: treeIndex)
                     if associatedWith != nil {
@@ -565,12 +567,10 @@ extension TreeList where Value: Hashable {
                 }
             case let .insert(destinationIndex, value, associatedWith):
                 guard let destinationTreeIndex = tree.firstIndex(of: destinationIndex) else {
-                    print("could not find parent of insert index \(destinationIndex)")
                     return nil
                 }
                 if associatedWith != nil {
                     guard let removedNode = removedNodes[value] else {
-                        print("could not find source node for value \(value)")
                         return nil
                     }
                     tree.insert(removedNode, at: destinationTreeIndex)
