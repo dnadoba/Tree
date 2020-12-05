@@ -12,7 +12,6 @@
 		4F8F13A02569A06900A7F605 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F8F139F2569A06900A7F605 /* Assets.xcassets */; };
 		4F8F13A32569A06900A7F605 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F8F13A12569A06900A7F605 /* Main.storyboard */; };
 		4F8F13B82569A14500A7F605 /* Tree in Frameworks */ = {isa = PBXBuildFile; productRef = 4F8F13B72569A14500A7F605 /* Tree */; };
-		4F8F13BC256A9D9200A7F605 /* OutlineViewDiffableDataSource in Frameworks */ = {isa = PBXBuildFile; productRef = 4F8F13BB256A9D9200A7F605 /* OutlineViewDiffableDataSource */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,7 +29,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F8F13BC256A9D9200A7F605 /* OutlineViewDiffableDataSource in Frameworks */,
 				4F8F13B82569A14500A7F605 /* Tree in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -93,7 +91,6 @@
 			name = "Tree macOS";
 			packageProductDependencies = (
 				4F8F13B72569A14500A7F605 /* Tree */,
-				4F8F13BB256A9D9200A7F605 /* OutlineViewDiffableDataSource */,
 			);
 			productName = "Tree macOS";
 			productReference = 4F8F13982569A06600A7F605 /* Tree macOS.app */;
@@ -123,7 +120,6 @@
 			);
 			mainGroup = 4F8F138F2569A06600A7F605;
 			packageReferences = (
-				4F8F13BA256A9D9200A7F605 /* XCRemoteSwiftPackageReference "OutlineViewDiffableDataSource" */,
 			);
 			productRefGroup = 4F8F13992569A06600A7F605 /* Products */;
 			projectDirPath = "";
@@ -350,26 +346,10 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		4F8F13BA256A9D9200A7F605 /* XCRemoteSwiftPackageReference "OutlineViewDiffableDataSource" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/shpakovski/OutlineViewDiffableDataSource.git";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
 		4F8F13B72569A14500A7F605 /* Tree */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Tree;
-		};
-		4F8F13BB256A9D9200A7F605 /* OutlineViewDiffableDataSource */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4F8F13BA256A9D9200A7F605 /* XCRemoteSwiftPackageReference "OutlineViewDiffableDataSource" */;
-			productName = OutlineViewDiffableDataSource;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
