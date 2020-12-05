@@ -34,64 +34,6 @@ final class NSItem<Value: Hashable>: NSObject {
 
 }
 
-// MARK: - Private API
-
-final private class MasterCellView: NSTableCellView {
-
-  /// Creates a cell with a label.
-  init() {
-    super.init(frame: .zero)
-
-    let label = NSTextField(labelWithString: "")
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.lineBreakMode = .byTruncatingTail
-    label.allowsExpansionToolTips = true
-    label.setContentHuggingPriority(.fittingSizeCompression, for: .horizontal)
-    label.setContentCompressionResistancePriority(.fittingSizeCompression, for: .horizontal)
-    addSubview(label)
-
-    self.textField = label
-    self.translatesAutoresizingMaskIntoConstraints = false
-
-    NSLayoutConstraint.activate([
-      label.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 2),
-      self.trailingAnchor.constraint(equalTo: label.trailingAnchor, constant: 2),
-      self.centerYAnchor.constraint(equalTo: label.centerYAnchor, constant: 1),
-      self.heightAnchor.constraint(equalToConstant: 22),
-    ])
-  }
-
-  @available(*, unavailable, message: "Use init")
-  override init(frame frameRect: NSRect) {
-    fatalError()
-  }
-
-  @available(*, unavailable, message: "Use init")
-  required init?(coder: NSCoder) {
-    fatalError()
-  }
-
-  // MARK: -
-
-  /// Erases previous title.
-  override func prepareForReuse() {
-    super.prepareForReuse()
-
-    if let label = textField {
-      label.stringValue = ""
-    }
-  }
-
-  /// Retrieves new title from the associated master item.
-  override var objectValue: Any? {
-    didSet {
-      if let label = textField, let masterItem = objectValue as? NSItem<String> {
-        label.stringValue = masterItem.value
-      }
-    }
-  }
-}
-
 extension NSTableView {
     func removeAllTableColumns() {
         for tableColumn in tableColumns {
@@ -187,23 +129,12 @@ extension TreeController {
     }
 }
 extension TreeController: NSOutlineViewDelegate {
-//    func outlineView(_ outlineView: NSOutlineView, rowViewForItem item: Any) -> NSTableRowView? {
-//        guard let id = (item as? Item)?.value else {
-//            fatalError("could not cast item \(item) to \(Item.self)")
-//        }
-//        guard let value = tree.first(where: { $0.value == id }) else {
-//            fatalError("item \(id) not in tree")
-//        }
-//        print(view)
-//        let view = NSTableRowView()
-//        return view
-//    }
     func outlineView(_ outlineView: NSOutlineView, dataCellFor tableColumn: NSTableColumn?, item: Any) -> NSCell? {
         let id = self.castToItem(item)
         return NSTextFieldCell(textCell: id)
     }
     func outlineView(_ outlineView: NSOutlineView, objectValueFor tableColumn: NSTableColumn?, byItem item: Any?) -> Any? {
-        return self.castToItem(item) as NSString
+        return self.castToItem(item as Any) as NSString
     }
 }
 
