@@ -435,39 +435,7 @@ public struct TreeDifference<Value: Hashable> {
     } }
     
     public init(changes: [Change]) {
-        self.changes = changes.sorted { (a, b) -> Bool in
-            switch (a, b) {
-            case (.remove(_, _, _), .insert(_, _, _)):
-                return true
-            case (.insert(_, _, _), .remove(_, _, _)):
-                return false
-            case (.insert(_, _, _), .insert(_, _, _)):
-                if a.index.depth == b.index.depth {
-                    return a.index.offset < b.index.offset
-                }
-                return a.index.depth < b.index.depth
-            case (.remove(_, _, _), .remove(_, _, _)):
-                if b.index.depth == a.index.depth {
-                    return b.index.offset < a.index.offset
-                }
-                return b.index.depth < a.index.depth
-            }
-        }
-    }
-    
-    public func inferringMoves() -> TreeDifference<Value> {
-        let removalMap = Dictionary(uniqueKeysWithValues: removals.map{ ($0.value, $0) })
-        let insertionMap = Dictionary(uniqueKeysWithValues: insertions.map{ ($0.value, $0) })
-        
-        let changesWithInferredMoves = changes.map { change -> Change in
-            switch change {
-            case let .insert(index, value, _):
-                return .insert(index: index, value: value, associatedWith: removalMap[value]?.index)
-            case let .remove(index, value, _):
-                return .remove(index: index, value: value, associatedWith: insertionMap[value]?.index)
-            }
-        }
-        return .init(changes: changesWithInferredMoves.sorted { (a, b) -> Bool in
+        self.init(sortedChanges: changes.sorted { (a, b) -> Bool in
             switch (a, b) {
             case (.remove(_, _, _), .insert(_, _, _)):
                 return true
@@ -485,6 +453,9 @@ public struct TreeDifference<Value: Hashable> {
                 return b.index.depth < a.index.depth
             }
         })
+    }
+    internal init(sortedChanges: [Change]) {
+        self.changes = sortedChanges
     }
 }
 
@@ -509,37 +480,81 @@ extension TreeDifference.Change: CustomDebugStringConvertible where Value: Custo
 extension TreeList where Value: Hashable {
     public func difference(from old: Self) -> TreeDifference<Value> {
         let new = self
-        let mapNew = Dictionary(uniqueKeysWithValues: new.mapChildrenWithParents({ ($0.last, ($1, $0.count)) }))
-        let mapOld = Dictionary(uniqueKeysWithValues: old.mapChildrenWithParents({ ($0.last, ($1, $0.count)) }))
+        let mapNew = Dictionary(uniqueKeysWithValues: new.mapChildrenWithParents({
+            ($0.last, (children: $1, depth: $0.count))
+        }))
+        let mapOld = Dictionary(uniqueKeysWithValues: old.mapChildrenWithParents({
+            ($0.last, (children: $1, depth: $0.count))
+        }))
         
         let keys = Set(mapNew.keys).union(mapOld.keys)
         
         let changes = keys.flatMap { parent -> [TreeDifference<Value>.Change] in
+            /// if the `new` tree does not contain `parent`, all children get removed
             guard let new = mapNew[parent] else {
-                let old = mapOld[parent]!
-                let oldDepth = old.1
-                return old.0.enumerated().reversed().map { (offset, value) in
-                    return .remove(index: .init(parent: parent, depth: oldDepth, offset: offset), value: value, associatedWith: nil)
+                /// if we are not at the root of the tree list, we can actually skip removing all children,
+                /// because `parent` is a child of some other node and we will generate a remove operation
+                /// for the parent or some ancestor.
+                /// However, if we are at the root of the tree, parent is nil and we need to generate a remove for each child.
+                guard parent != nil else {
+                    return []
+                }
+                let old = mapOld[parent]! /// because `mapNew` does not contain `parent`, `mapOld` must contain it
+                return old.children.enumerated().reversed().map { (offset, value) in
+                    return .remove(
+                        index: .init(parent: parent, depth: old.depth, offset: offset),
+                        value: value,
+                        associatedWith: nil
+                    )
                 }
             }
-            let newDepth = new.1
+            /// if the `old` tree does not contain `parent`, all new children get inserted
             guard let old = mapOld[parent] else {
-                return new.0.enumerated().map { (offset, value) in
-                    return .insert(index: .init(parent: parent, depth: newDepth, offset: offset), value: value, associatedWith: nil)
+                return new.children.enumerated().map { (offset, value) in
+                    return .insert(
+                        index: .init(parent: parent, depth: new.depth, offset: offset),
+                        value: value,
+                        associatedWith: nil
+                    )
                 }
             }
-            let oldDepth = old.1
-            
+            /// compute inserts and removes.
             return new.0.difference(from: old.0).map { change -> TreeDifference<Value>.Change in
                 switch change {
                 case let .insert(offset, value, _):
-                    return .insert(index: .init(parent: parent, depth: newDepth, offset: offset), value: value, associatedWith: nil)
+                    return .insert(
+                        index: .init(parent: parent, depth: new.depth, offset: offset),
+                        value: value,
+                        associatedWith: nil
+                    )
                 case let .remove(offset, value, _):
-                    return .remove(index: .init(parent: parent, depth: oldDepth, offset: offset), value: value, associatedWith: nil)
+                    return .remove(
+                        index: .init(parent: parent, depth: old.depth, offset: offset),
+                        value: value,
+                        associatedWith: nil
+                    )
                 }
             }
         }
-        return .init(changes: changes)
+        return TreeDifference(changes: changes)
+    }
+}
+
+extension TreeDifference {
+    public func inferringMoves() -> TreeDifference<Value> {
+        let removalMap = Dictionary(uniqueKeysWithValues: removals.map{ ($0.value, $0) })
+        let insertionMap = Dictionary(uniqueKeysWithValues: insertions.map{ ($0.value, $0) })
+        
+        let changesWithInferredMoves = changes.map { change -> Change in
+            switch change {
+            case let .insert(index, value, _):
+                return .insert(index: index, value: value, associatedWith: removalMap[value]?.index)
+            case let .remove(index, value, _):
+                return .remove(index: index, value: value, associatedWith: insertionMap[value]?.index)
+            }
+        }
+        /// because we do not change the order of the changes, we do not need to sort the changes again
+        return .init(sortedChanges: changesWithInferredMoves)
     }
 }
 
