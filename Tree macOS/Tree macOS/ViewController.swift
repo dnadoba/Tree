@@ -15,7 +15,7 @@ extension BidirectionalCollection {
     }
 }
 
-public final class NSItem<Value: Hashable>: NSObject {
+public final class ReferenceItem<Value: Hashable>: NSObject {
     public var value: Value
     public init(_ value: Value) {
         self.value = value
@@ -44,23 +44,22 @@ extension NSTableView {
 
 class TreeController: NSViewController {
     typealias Value = String
-    typealias Item = NSItem<Value>
     var tree: TreeList = [TreeNode(
                             "A",
                             children: [
-                                .init("AA"),
-                                .init("AB"),
-                                .init("AC", children: [
-                                    .init("ACA"),
-                                    .init("ACB"),
-                                    .init("ACC"),
-                                    .init("ACD", children: [
-                                        .init("ACDA"),
-                                        .init("ACDB"),
-                                        .init("ACDC"),
+                                .init("B"),
+                                .init("C"),
+                                .init("D", children: [
+                                    .init("E"),
+                                    .init("F"),
+                                    .init("G"),
+                                    .init("H", children: [
+                                        .init("I"),
+                                        .init("L"),
+                                        .init("M"),
                                     ]),
                                 ]),
-                                .init("AD"),
+                                .init("N"),
                             ])]
     
     private let outlineView = NSOutlineView(frame: NSRect(origin: .zero, size: .init(width: 200, height: 400)))
@@ -166,7 +165,7 @@ class TreeController: NSViewController {
 
 
 public final class OutlineViewTreeDataSource<Item: Hashable>: NSObject, NSOutlineViewDataSource {
-    public typealias ItemReference = NSItem<Item>
+    public typealias ItemReference = ReferenceItem<Item>
     public struct DragAndDrop {
         public var draggingSessionWillBegin: (NSDraggingSession, NSPoint, [Item]) -> () = { _, _, _ in }
         public var pasteboardWriterForItem: (Item) -> NSPasteboardWriting? = { _ in nil}
@@ -197,11 +196,14 @@ public final class OutlineViewTreeDataSource<Item: Hashable>: NSObject, NSOutlin
     ) {
         let oldTree = referenceTree
         updateReferenceTree(newTree)
+        updateIndexCache(newTree)
         let newTree = referenceTree
         
         let diff = newTree.difference(from: oldTree).inferringMoves()
         outlineView.animateChanges(diff)
-        outlineView.expandNewSubtrees(old: oldTree, new: newTree)
+        if expandNewSections {
+            outlineView.expandNewSubtrees(old: oldTree, new: newTree)
+        }
     }
     private func updateIndexCache(_ newTree: TreeList<Item>) {
         indexCache = .init(uniqueKeysWithValues: zip(newTree.lazy.map(\.value), newTree.indices))
