@@ -165,25 +165,25 @@ class TreeController: NSViewController {
 }
 
 
-public final class OutlineViewTreeDataSource<Element: Hashable>: NSObject, NSOutlineViewDataSource {
-    public typealias Item = NSItem<Element>
+public final class OutlineViewTreeDataSource<Item: Hashable>: NSObject, NSOutlineViewDataSource {
+    public typealias ItemReference = NSItem<Item>
     public struct DragAndDrop {
-        public var draggingSessionWillBegin: (NSDraggingSession, NSPoint, [Element]) -> () = { _, _, _ in }
-        public var pasteboardWriterForItem: (Element) -> NSPasteboardWriting? = { _ in nil}
+        public var draggingSessionWillBegin: (NSDraggingSession, NSPoint, [Item]) -> () = { _, _, _ in }
+        public var pasteboardWriterForItem: (Item) -> NSPasteboardWriting? = { _ in nil}
         public var updateDraggingItemsForDrag: (NSDraggingInfo) -> () = { _ in }
-        public var validateDrop: (NSDraggingInfo, Element?, Int) -> NSDragOperation = { info, _, _ in info.draggingSourceOperationMask }
-        public var acceptDrop: (NSDraggingInfo, Element?, Int) -> Bool = { _, _, _ in false }
+        public var validateDrop: (NSDraggingInfo, Item?, Int) -> NSDragOperation = { info, _, _ in info.draggingSourceOperationMask }
+        public var acceptDrop: (NSDraggingInfo, Item?, Int) -> Bool = { _, _, _ in false }
         public var draggingSessionEnded: (NSDraggingSession, NSPoint, NSDragOperation) -> () = { _, _, _ in }
     }
     public let outlineView: NSOutlineView
-    public var dataCell: (NSTableColumn?, Element) -> NSCell? = { _, _ in nil }
-    public var objectForItem: (NSTableColumn?, Element) -> Any? = { _, _ in nil }
-    public var isItemExpandable: (Element) -> Bool = { _ in false }
+    public var dataCell: (NSTableColumn?, Item) -> NSCell? = { _, _ in nil }
+    public var objectForItem: (NSTableColumn?, Item) -> Any? = { _, _ in nil }
+    public var isItemExpandable: (Item) -> Bool = { _ in false }
     public var dragAndDrop: DragAndDrop = DragAndDrop()
     
-    private var referenceCache: [Element: Item] = [:]
-    private var indexCache: [Element: TreeIndex] = [:]
-    public private(set) var referenceTree: TreeList<Item> = []
+    private var referenceCache: [Item: ItemReference] = [:]
+    private var indexCache: [Item: TreeIndex] = [:]
+    public private(set) var referenceTree: TreeList<ItemReference> = []
     
     init(outlineView: NSOutlineView) {
         self.outlineView = outlineView
@@ -192,7 +192,7 @@ public final class OutlineViewTreeDataSource<Element: Hashable>: NSObject, NSOut
     }
     
     public func updateAndAnimatedChanges(
-        _ newTree: TreeList<Element>,
+        _ newTree: TreeList<Item>,
         expandNewSections: Bool = true
     ) {
         let oldTree = referenceTree
@@ -203,27 +203,27 @@ public final class OutlineViewTreeDataSource<Element: Hashable>: NSObject, NSOut
         outlineView.animateChanges(diff)
         outlineView.expandNewSubtrees(old: oldTree, new: newTree)
     }
-    private func updateIndexCache(_ newTree: TreeList<Element>) {
+    private func updateIndexCache(_ newTree: TreeList<Item>) {
         indexCache = .init(uniqueKeysWithValues: zip(newTree.lazy.map(\.value), newTree.indices))
     }
-    private func updateReferenceTree(_ newTree: TreeList<Element>) {
-        referenceTree = newTree.mapValues { element in
-            if referenceCache[element] == nil {
-                referenceCache[element] = Item(element)
+    private func updateReferenceTree(_ newTree: TreeList<Item>) {
+        referenceTree = newTree.mapValues { item in
+            if referenceCache[item] == nil {
+                referenceCache[item] = ItemReference(item)
             }
-            return referenceCache[element]!
+            return referenceCache[item]!
         }
     }
-    public func getTreeNode(for element: Element) -> TreeNode<Item>? {
-        referenceTree.first(where: { $0.value.value == element })
+    public func getTreeNode(for item: Item) -> TreeNode<ItemReference>? {
+        referenceTree.first(where: { $0.value.value == item })
     }
     
     // MARK: Data Source
     func outlineView(_ outlineView: NSOutlineView, dataCellFor tableColumn: NSTableColumn?, item: Any) -> NSCell? {
-        dataCell(tableColumn, castToElement(item))
+        dataCell(tableColumn, getValueFromReference(item))
     }
     public func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
-        isItemExpandable(castToElement(item))
+        isItemExpandable(getValueFromReference(item))
     }
     public func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
         guard let item = item else {
@@ -232,7 +232,7 @@ public final class OutlineViewTreeDataSource<Element: Hashable>: NSObject, NSOut
         return getTreeNode(for: item).children.count
     }
     public func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
-        let treeNodes: [TreeNode<Item>] = {
+        let treeNodes: [TreeNode<ItemReference>] = {
             guard let item = item else {
                 return referenceTree.nodes
             }
@@ -241,24 +241,24 @@ public final class OutlineViewTreeDataSource<Element: Hashable>: NSObject, NSOut
         return treeNodes[index].value
     }
     public func outlineView(_ outlineView: NSOutlineView, objectValueFor tableColumn: NSTableColumn?, byItem item: Any?) -> Any? {
-        objectForItem(tableColumn, castToElement(item as Any))
+        objectForItem(tableColumn, getValueFromReference(item as Any))
     }
     
     // MARK: Drag and Drop
     public func outlineView(_ outlineView: NSOutlineView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forItems draggedItems: [Any]) {
-        dragAndDrop.draggingSessionWillBegin(session, screenPoint, draggedItems.map(castToElement))
+        dragAndDrop.draggingSessionWillBegin(session, screenPoint, draggedItems.map(getValueFromReference))
     }
     public func outlineView(_ outlineView: NSOutlineView, pasteboardWriterForItem item: Any) -> NSPasteboardWriting? {
-        dragAndDrop.pasteboardWriterForItem(castToElement(item))
+        dragAndDrop.pasteboardWriterForItem(getValueFromReference(item))
     }
     public func outlineView(_ outlineView: NSOutlineView, updateDraggingItemsForDrag draggingInfo: NSDraggingInfo) {
         dragAndDrop.updateDraggingItemsForDrag(draggingInfo)
     }
     public func outlineView(_ outlineView: NSOutlineView, validateDrop info: NSDraggingInfo, proposedItem item: Any?, proposedChildIndex index: Int) -> NSDragOperation {
-        dragAndDrop.validateDrop(info, castToElement(item), index)
+        dragAndDrop.validateDrop(info, getValueFromReference(item), index)
     }
     public func outlineView(_ outlineView: NSOutlineView, acceptDrop info: NSDraggingInfo, item: Any?, childIndex index: Int) -> Bool {
-        dragAndDrop.acceptDrop(info, castToElement(item), index)
+        dragAndDrop.acceptDrop(info, getValueFromReference(item), index)
     }
     public func outlineView(_ outlineView: NSOutlineView, draggingSession session: NSDraggingSession, endedAt screenPoint: NSPoint, operation: NSDragOperation) {
         dragAndDrop.draggingSessionEnded(session, screenPoint, operation)
@@ -266,30 +266,27 @@ public final class OutlineViewTreeDataSource<Element: Hashable>: NSObject, NSOut
 }
 
 extension OutlineViewTreeDataSource {
-    public func castToElement(_ item: Any) -> Element {
-        guard let id = (item as? Item)?.value else {
-            fatalError("could not cast item \(item) to \(Item.self)")
+    public func getValueFromReference(_ referenceItem: Any) -> Item {
+        guard let value = (referenceItem as? ItemReference)?.value else {
+            fatalError("could not cast item \(referenceItem) to \(ItemReference.self)")
         }
-        return id
+        return value
     }
-    public func castToElement(_ item: Any?) -> Element? {
-        guard let id = (item as? Item)?.value else {
-            fatalError("could not cast item \(item as Any) to \(Item.self)")
-        }
-        return id
+    public func getValueFromReference(_ item: Any?) -> Item? {
+        (item as? ItemReference)?.value
     }
     public func getTreeIndex(for item: Any?) -> TreeIndex {
-        getTreeIndex(for: castToElement(item))
+        getTreeIndex(for: getValueFromReference(item))
     }
-    public func getTreeIndex(for element: Element?) -> TreeIndex {
-        guard let element = element else { return referenceTree.startIndex }
-        return indexCache[element]!
+    public func getTreeIndex(for item: Item?) -> TreeIndex {
+        guard let item = item else { return referenceTree.startIndex }
+        return indexCache[item]!
     }
-    public func getTreeNode(for item: Any) -> TreeNode<Item> {
-        getTreeNode(for: castToElement(item))
+    public func getTreeNode(for item: Any) -> TreeNode<ItemReference> {
+        getTreeNode(for: getValueFromReference(item))
     }
-    public func getTreeNode(for element: Element) -> TreeNode<Item> {
-        return referenceTree[getTreeIndex(for: element)]
+    public func getTreeNode(for item: Item) -> TreeNode<ItemReference> {
+        return referenceTree[getTreeIndex(for: item)]
     }
 }
 
@@ -302,7 +299,7 @@ extension TreeController {
 }
 extension TreeController: NSOutlineViewDelegate {
     func outlineView(_ outlineView: NSOutlineView, objectValueFor tableColumn: NSTableColumn?, byItem item: Any?) -> Any? {
-        return dataSource.castToElement(item as Any) as NSString
+        return dataSource.getValueFromReference(item as Any) as NSString
     }
 }
 
