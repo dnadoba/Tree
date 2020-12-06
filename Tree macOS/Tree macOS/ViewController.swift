@@ -192,15 +192,17 @@ public final class OutlineViewTreeDataSource<Item: Hashable>: NSObject, NSOutlin
     
     public func updateAndAnimatedChanges(
         _ newTree: TreeList<Item>,
+        removeAnimation: NSTableView.AnimationOptions = [.effectFade, .slideUp],
+        insertAnimation: NSTableView.AnimationOptions = [.effectFade, .slideDown],
         expandNewSections: Bool = true
     ) {
         let oldTree = referenceTree
-        updateReferenceTree(newTree)
         updateIndexCache(newTree)
+        updateReferenceTree(newTree)
         let newTree = referenceTree
         
         let diff = newTree.difference(from: oldTree).inferringMoves()
-        outlineView.animateChanges(diff)
+        outlineView.animateChanges(diff, removeAnimation: removeAnimation, insertAnimation: insertAnimation)
         if expandNewSections {
             outlineView.expandNewSubtrees(old: oldTree, new: newTree)
         }
