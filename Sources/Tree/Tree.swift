@@ -387,3 +387,60 @@ extension TreeList {
             }
     }
 }
+
+// MARK: Move
+extension TreeList where Value: Hashable {
+    
+    /// Moves the TreeNodes at the given `sourceIndices` to the `insertIndex`.
+    ///  The `sourceIndices` and `insertIndex` are both specified in the before state of the tree.
+    ///  If elements are removed before the `insertIndex`, the `insertIndex` will be adjusted.
+    ///
+    ///  The move operation will fail and return nil, if the `insertIndex` is a child of one of the moved TreeNodes.
+    /// - Parameters:
+    ///   - sourceIndices: the indices of the elements that should be moved
+    ///   - insertIndex: the insertion index to move the elements to
+    /// - Returns: A new Tree with the specified changes or nil if the the move was not possible
+    public func move(indices sourceIndices: [TreeIndex], to insertIndex: TreeIndex) -> TreeList<Value>? {
+        var tree = self
+        let originalParentInsertIndex = tree.parentIndex(of: insertIndex)
+        let originalChildInsertIndex = tree.childIndex(of: insertIndex)
+        
+        let parent = tree[safe: originalParentInsertIndex]?.value
+    
+        let sourceIndices = sourceIndices.sorted(by: <)
+
+        var childIndex = originalChildInsertIndex
+        var elements: [TreeNode<Value>] = []
+        elements.reserveCapacity(sourceIndices.count)
+        for index in sourceIndices.reversed() {
+            let currentParentIndex = tree.parentIndex(of: index)
+            let currentChildIndex = tree.childIndex(of: index)
+            if currentParentIndex == originalParentInsertIndex &&
+                currentChildIndex < childIndex {
+                childIndex -= 1
+            }
+            elements.append(tree.remove(at: index))
+        }
+        func getTreeIndex(for item: Value?) -> TreeIndex? {
+            guard let item = item else { return TreeIndex(indices: []) }
+            return tree.firstIndex(where: { $0.value == item })
+        }
+        guard let parentIndex = getTreeIndex(for: parent) else {
+            return nil
+        }
+        let dropIndex = tree.addChildIndex(childIndex, to: parentIndex)
+        let childrenCountOfItem: Int? = {
+            if parent == nil {
+                return tree.nodes.count
+            }
+            return tree[safe: parentIndex]?.children.count
+        }()
+        if let childrenCountOfItem = childrenCountOfItem,
+           childIndex >= 0, childIndex <= childrenCountOfItem {
+            tree.insert(contentsOf: elements.reversed(), at: dropIndex)
+            return tree
+        } else {
+            return nil
+        }
+    }
+}

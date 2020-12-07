@@ -45,7 +45,6 @@ public final class OutlineViewTreeDataSource<Item: Hashable>: NSObject, NSOutlin
         }
     }
     public let outlineView: NSOutlineView
-    public var dataCell: (NSTableColumn?, Item) -> NSCell? = { _, _ in nil }
     public var objectForItem: (NSTableColumn?, Item) -> Any? = { _, _ in nil }
     public var isItemExpandable: (Item) -> Bool = { _ in false }
     public var dragAndDrop: DragAndDrop = DragAndDrop()
@@ -93,9 +92,6 @@ public final class OutlineViewTreeDataSource<Item: Hashable>: NSObject, NSOutlin
     }
     
     // MARK: Data Source
-    func outlineView(_ outlineView: NSOutlineView, dataCellFor tableColumn: NSTableColumn?, item: Any) -> NSCell? {
-        dataCell(tableColumn, getValueFromReference(item))
-    }
     public func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
         isItemExpandable(getValueFromReference(item))
     }
@@ -161,6 +157,14 @@ extension OutlineViewTreeDataSource {
     }
     public func getTreeNode(for item: Item) -> TreeNode<ItemReference> {
         return referenceTree[getTreeIndex(for: item)]
+    }
+}
+
+extension OutlineViewTreeDataSource {
+    public func getSelectedTreeIndices() -> [TreeIndex] {
+        return outlineView.selectedRowIndexes
+            .compactMap(outlineView.item(atRow:))
+            .map({ getTreeIndex(for: $0) })
     }
 }
 
