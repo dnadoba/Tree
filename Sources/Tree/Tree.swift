@@ -254,16 +254,20 @@ extension TreeList {
     public init() {
         self.init([])
     }
+    public mutating func remove<S>(at indices: S) where S: Sequence, S.Element == TreeIndex {
+        indices
+            .sorted(by: >)
+            .forEach({ remove(at: $0) })
+    }
     public mutating func removeSubrange(_ bounds: Range<TreeIndex>) {
-        var indicies = [TreeIndex]()
-        var index = bounds.lowerBound
-
-        while index < bounds.upperBound {
-            indicies.append(index)
-            index = self.index(after: index)
-        }
-        for index in indicies.reversed() {
+        var index = bounds.upperBound
+        while true {
             remove(at: index)
+            if index == bounds.lowerBound {
+                break
+            } else {
+                index = self.index(before: index)
+            }
         }
     }
     @discardableResult

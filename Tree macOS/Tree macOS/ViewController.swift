@@ -137,9 +137,7 @@ class TreeController: NSViewController {
     }
     @objc func delete(_ sender: Any) {
         modifyTree({
-            for index in getSelectedTreeIndices().sorted(by: <).reversed() {
-                $0.remove(at: index)
-            }
+            $0.remove(at: getSelectedTreeIndices())
         })
     }
 }
