@@ -14,6 +14,18 @@ struct Pair<First, Second> {
 extension Pair: Equatable where First: Equatable, Second: Equatable {}
 extension Pair: Hashable where First: Hashable, Second: Hashable {}
 
+extension TreeIndex: ExpressibleByArrayLiteral {
+    public init(arrayLiteral elements: Int...) {
+        self.init(indices: elements)
+    }
+}
+
+extension TreeList where Value: Equatable {
+    func firstIndex(of value: Value) -> TreeIndex? {
+        firstIndex(where: { $0.value == value })
+    }
+}
+
 final class TreeTests: XCTestCase {
     func testIndexAfter() {
         let tree = TreeNode(
@@ -189,11 +201,9 @@ final class TreeTests: XCTestCase {
                 ]),
                 .init("AD"),
         ])]
-        let tree1 = tree
-        var tree2 = tree
-        tree2.remove(at: tree.firstIndex(where: { $0.value == "AC" })!)
+        tree.remove(at: tree.firstIndex(where: { $0.value == "AC" })!)
         XCTAssertEqual(
-            tree2,
+            tree,
             [TreeNode(
                 "A",
                 children: [
@@ -221,5 +231,78 @@ final class TreeTests: XCTestCase {
             Pair(["A", "C", "E"], []),
             Pair(["A", "F"], []),
         ])
+    }
+    
+    func testMoveOneNodeWithoutChildren() {
+        let tree: TreeList = """
+        - A
+          - B
+          - C
+            - D
+            - E
+          - F
+        """
+        XCTAssertEqual(
+            tree.move(
+                indices: [tree.firstIndex(of: "D")!],
+                to: tree.firstIndex(of: "A")!),
+            """
+            - D
+            - A
+              - B
+              - C
+                - E
+              - F
+            """
+        )
+    }
+    func testMoveOneNodeWithChildren() {
+        let tree: TreeList = """
+        - A
+          - B
+          - C
+            - D
+            - E
+          - F
+        """
+        XCTAssertEqual(
+            tree.move(
+                indices: [tree.firstIndex(of: "C")!],
+                to: tree.firstIndex(of: "A")!),
+            """
+            - C
+              - D
+              - E
+            - A
+              - B
+              - F
+            """
+        )
+        func testMoveTwoNodesWithChildren() {
+            let tree: TreeList = """
+            - A
+              - B
+              - C
+                - D
+                - E
+              - F
+            """
+            XCTAssertEqual(
+                tree.move(
+                    indices: [
+                        tree.firstIndex(of: "D")!,
+                        tree.firstIndex(of: "C")!,
+                    ],
+                    to: tree.firstIndex(of: "A")!),
+                """
+                - C
+                  - E
+                - D
+                - A
+                  - B
+                  - F
+                """
+            )
+        }
     }
 }
