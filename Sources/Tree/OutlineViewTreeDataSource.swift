@@ -149,7 +149,7 @@ extension OutlineViewTreeDataSource {
         getTreeIndex(for: getValueFromReference(item))
     }
     public func getTreeIndex(for item: Item?) -> TreeIndex {
-        guard let item = item else { return referenceTree.startIndex }
+        guard let item = item else { return TreeIndex(indices: []) }
         return indexCache[item]!
     }
     public func getTreeNode(for item: Any) -> TreeNode<ItemReference> {
@@ -165,6 +165,10 @@ extension OutlineViewTreeDataSource {
         return outlineView.selectedRowIndexes
             .compactMap(outlineView.item(atRow:))
             .map({ getTreeIndex(for: $0) })
+    }
+    public func getSelectedItems() -> [Item] {
+        outlineView.selectedRowIndexes
+            .compactMap({ getValueFromReference(outlineView.item(atRow: $0)) })
     }
 }
 

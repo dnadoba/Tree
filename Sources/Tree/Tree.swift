@@ -444,3 +444,29 @@ extension TreeList where Value: Hashable {
         }
     }
 }
+
+extension MutableCollection {
+    mutating func mapInPlace(_ transform: (inout Element) -> ()) {
+        for index in indices {
+            transform(&self[index])
+        }
+    }
+}
+
+extension TreeNode {
+    public mutating func removeAllChildren(where shouldBeRemoved: (TreeNode<Value>) -> Bool) {
+        children.removeAll(where: shouldBeRemoved)
+        children.mapInPlace {
+            $0.removeAllChildren(where: shouldBeRemoved)
+        }
+    }
+}
+
+extension TreeList {
+    public mutating func removeAll(where shouldBeRemoved: (TreeNode<Value>) -> Bool) {
+        nodes.removeAll(where: shouldBeRemoved)
+        nodes.mapInPlace {
+            $0.removeAllChildren(where: shouldBeRemoved)
+        }
+    }
+}
