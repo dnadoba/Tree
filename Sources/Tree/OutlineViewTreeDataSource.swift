@@ -158,6 +158,11 @@ extension OutlineViewTreeDataSource {
     public func getTreeNode(for item: Item) -> TreeNode<ItemReference> {
         return referenceTree[getTreeIndex(for: item)]
     }
+    public func getTreeIndex(for parent: Item?, childIndex index: Int) -> TreeIndex {
+        let itemIndex = getTreeIndex(for: parent)
+        let index = index == NSOutlineViewDropOnItemIndex ? 0 : index
+        return referenceTree.addChildIndex(index, to: itemIndex)
+    }
 }
 
 extension OutlineViewTreeDataSource {

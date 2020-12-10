@@ -314,6 +314,9 @@ extension TreeList {
 }
 
 extension TreeList {
+    public func depth(of i: TreeIndex) -> Int {
+        i.indices.count - 1
+    }
     public func parentIndex(of i: TreeIndex) -> TreeIndex {
         TreeIndex(indices: i.indices.dropLast())
     }
@@ -322,6 +325,18 @@ extension TreeList {
     }
     public func addChildIndex(_ i: Int, to baseIndex: TreeIndex) -> TreeIndex {
         TreeIndex(indices: baseIndex.indices + [i])
+    }
+}
+
+extension TreeList {
+    public func neighbours(at i: TreeIndex) -> [TreeNode<Value>] {
+        guard depth(of: i) > 0 else { return nodes }
+        return self[parentIndex(of: i)].children
+    }
+    public func canInsert(at i: TreeIndex) -> Bool {
+        let neighbours = self.neighbours(at: i)
+        let childInsertIndex = self.childIndex(of: i)
+        return (neighbours.startIndex...neighbours.endIndex).contains(childInsertIndex)
     }
 }
 
