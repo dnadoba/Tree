@@ -403,6 +403,40 @@ extension TreeList {
     }
 }
 
+// MARK: compactMap
+
+extension TreeNode {
+    public func compactMapValues<NewValue>(_ transform: (Value) -> NewValue?) -> TreeNode<NewValue>? {
+        guard let newValue = transform(value) else { return nil }
+        let newChildren = children.compactMap{ $0.compactMapValues(transform) }
+        return .init(newValue, children: newChildren)
+    }
+}
+
+extension TreeList {
+    public func compactMapValues<NewValue>(_ transform: (Value) -> NewValue?) -> TreeList<NewValue> {
+        let newNodes = nodes.compactMap({ $0.compactMapValues(transform) })
+        return .init(newNodes)
+    }
+}
+
+// MARK: filter
+
+extension TreeNode {
+    public func filterValues(_ isIncluded: (Value) -> Bool) -> TreeNode<Value>? {
+        guard isIncluded(value) else { return nil }
+        let newChildren = children.compactMap{ $0.filterValues(isIncluded) }
+        return .init(value, children: newChildren)
+    }
+}
+
+extension TreeList {
+    public func filterValues(_ isIncluded: (Value) -> Bool) -> TreeList<Value> {
+        let newNodes = nodes.compactMap({ $0.filterValues(isIncluded) })
+        return .init(newNodes)
+    }
+}
+
 // MARK: Move
 extension TreeList where Value: Hashable {
     
