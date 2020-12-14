@@ -54,6 +54,9 @@ extension TreeNode: MutableCollection, BidirectionalCollection {
     public typealias Index = TreeIndex
     public var startIndex: TreeIndex { TreeIndex(indices: []) }
     public var endIndex: TreeIndex { TreeIndex(indices: [children.count]) }
+    public var count: Int { 1 + descendantCount }
+    public var descendantCount: Int { children.reduce(0, { $0 + $1.count }) }
+    public var underestimatedCount: Int { count }
     public subscript(position: TreeIndex) -> Element {
         get { self[position.indices[...]] }
         set { self[position.indices[...]] = newValue }
@@ -187,6 +190,8 @@ extension TreeList: MutableCollection, BidirectionalCollection {
     public typealias Index = TreeIndex
     public var startIndex: TreeIndex { TreeIndex(indices: [nodes.startIndex]) }
     public var endIndex: TreeIndex { TreeIndex(indices: [nodes.endIndex]) }
+    public var count: Int { nodes.reduce(0, { $0 + $1.count }) }
+    public var underestimatedCount: Int { count }
     public subscript(position: TreeIndex) -> Element {
         get { self[position.indices[...]] }
         set { self[position.indices[...]] = newValue }
