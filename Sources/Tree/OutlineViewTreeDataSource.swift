@@ -163,6 +163,9 @@ extension OutlineViewTreeDataSource {
         let index = index == NSOutlineViewDropOnItemIndex ? 0 : index
         return referenceTree.addChildIndex(index, to: itemIndex)
     }
+    public func getReference(for item: Item) -> Any? {
+        referenceCache[item]
+    }
 }
 
 extension OutlineViewTreeDataSource {
