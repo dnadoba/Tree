@@ -24,6 +24,7 @@ public struct TreeBuilder<Value> {
     
     
     // support raw values as an expression
+    @_disfavoredOverload
     public static func buildExpression(_ expression: Value) -> Component {
         [.init(expression)]
     }
