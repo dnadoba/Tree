@@ -7,6 +7,7 @@
 
 import Cocoa
 import Tree
+import TreeUI
 
 extension BidirectionalCollection {
     subscript(safe i: Index) -> Element? {

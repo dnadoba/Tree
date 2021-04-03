@@ -90,6 +90,8 @@ print(treeList)
  ```
 
 ### `NSOutlineView`
+> Note: `OutlineViewTreeDataSource` is defined in a seperate module called `TreeUI`. You need to `import TreeUI` to use it.
+
  `TreeList` and `TreeNode` were originaly created to be used as data model for NSOutlineView. Therefore, this package includes a tree diffing algorithm and `OutlineViewTreeDataSource` that allows to use Swift value types with `NSOutlineView`. Take a look at NSOutlineView Playground or the Tree macOS example Xcode project which are part of this repository.
  The diffing algorithm can also be used to efficiently send only what has changed over the network to another peer/server.
  

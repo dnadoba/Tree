@@ -3,6 +3,7 @@
 import AppKit
 import PlaygroundSupport
 import Tree
+import TreeUI
 
 extension BidirectionalCollection {
     subscript(safe i: Index) -> Element? {

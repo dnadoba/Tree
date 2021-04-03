@@ -7,6 +7,7 @@
 
 #if os(macOS)
 import AppKit
+import Tree
 
 public final class ReferenceItem<Value: Hashable>: NSObject {
     public var value: Value

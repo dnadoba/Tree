@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F2D165126191F120097A819 /* TreeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4F2D165026191F120097A819 /* TreeUI */; };
 		4F8F139C2569A06600A7F605 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8F139B2569A06600A7F605 /* AppDelegate.swift */; };
 		4F8F139E2569A06600A7F605 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8F139D2569A06600A7F605 /* ViewController.swift */; };
 		4F8F13A02569A06900A7F605 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F8F139F2569A06900A7F605 /* Assets.xcassets */; };
@@ -29,6 +30,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F2D165126191F120097A819 /* TreeUI in Frameworks */,
 				4F8F13B82569A14500A7F605 /* Tree in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -91,6 +93,7 @@
 			name = "Tree macOS";
 			packageProductDependencies = (
 				4F8F13B72569A14500A7F605 /* Tree */,
+				4F2D165026191F120097A819 /* TreeUI */,
 			);
 			productName = "Tree macOS";
 			productReference = 4F8F13982569A06600A7F605 /* Tree macOS.app */;
@@ -349,6 +352,10 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4F2D165026191F120097A819 /* TreeUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TreeUI;
+		};
 		4F8F13B72569A14500A7F605 /* Tree */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Tree;
