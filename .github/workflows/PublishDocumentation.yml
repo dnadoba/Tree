@@ -12,8 +12,12 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
-    - name: Publish Jazzy Docs
-      uses: steven0351/publish-jazzy-docs@v1
+    - name: Generate Jazzy Docs for all targets
+      uses: sersoft-gmbh/swifty-docs-action@v1
       with:
-        personal_access_token: ${{ secrets.ACCESS_TOKEN }}
-        config: .jazzy.yaml
+        output: docs
+    - name: Deploy 🚀
+      uses: JamesIves/github-pages-deploy-action@4.1.0
+      with:
+        branch: gh-pages # The branch the action should deploy to.
+        folder: docs # The folder the action should deploy.
