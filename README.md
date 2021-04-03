@@ -1,5 +1,4 @@
 # Tree - general tree data structure, tree diffing, NSOutlineView and SwiftUI support
-## This project uses `@resultBuilder` and requires Swift 5.4 or higher (e.g. Xcode 12.5)
 This package primarily includes a general tree data structure. 
 It also includes a tree diffing algorithm and `OutlineViewTreeDataSource` that allows to use Swift value types with `NSOutlineView` 
 A demo App can be found in the `Tree macOS` folder and the `NSOutlineView` Playground with support for drag and drop, undo/redo and animations.
@@ -17,6 +16,7 @@ A demo App can be found in the `Tree macOS` folder and the `NSOutlineView` Playg
  }
  ```
  With the help of `@resultBuilder` you can create a `TreeNode` like this:
+ > Note: `@resultBuilder` requires Swift 5.4 or higher (e.g. Xcode 12.5)
 
 ```swift
 let treeNode = TreeNode("root node") {
