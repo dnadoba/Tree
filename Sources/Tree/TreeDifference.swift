@@ -107,6 +107,7 @@ extension TreeDifference.Change: CustomDebugStringConvertible where Value: Custo
 
 
 extension TreeList where Value: Hashable {
+    @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
     public func difference(from old: Self) -> TreeDifference<Value> {
         let new = self
         let mapNew = Dictionary(uniqueKeysWithValues: new.mapChildrenWithParents({

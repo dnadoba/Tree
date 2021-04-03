@@ -4,7 +4,7 @@
 //
 //  Created by David Nadoba on 03.04.21.
 //
-
+#if swift(>=5.4)
 @resultBuilder
 public struct TreeBuilder<Value> {
     // We'll use these typealiases to make the lifting rules clearer in this example.
@@ -77,3 +77,4 @@ extension TreeNode {
         self.init(value, children: children())
     }
 }
+#endif

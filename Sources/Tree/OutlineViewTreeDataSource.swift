@@ -14,7 +14,7 @@ public final class ReferenceItem<Value: Hashable>: NSObject {
         self.value = value
         super.init()
     }
-    @objc public override var debugDescription: String { "NSItem(\(value))" }
+    @objc public override var debugDescription: String { "ReferenceItem(\(value))" }
     
     /// Necessary for sets.
     public override var hash: Int { value.hashValue }
@@ -26,6 +26,7 @@ public final class ReferenceItem<Value: Hashable>: NSObject {
     }
 }
 
+@available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
 public final class OutlineViewTreeDataSource<Item: Hashable>: NSObject, NSOutlineViewDataSource {
     public typealias ItemReference = ReferenceItem<Item>
     public struct DragAndDrop {
@@ -135,6 +136,7 @@ public final class OutlineViewTreeDataSource<Item: Hashable>: NSObject, NSOutlin
     }
 }
 
+@available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
 extension OutlineViewTreeDataSource {
     public func getValueFromReference(_ referenceItem: Any) -> Item {
         guard let value = (referenceItem as? ItemReference)?.value else {
@@ -168,6 +170,7 @@ extension OutlineViewTreeDataSource {
     }
 }
 
+@available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
 extension OutlineViewTreeDataSource {
     public func getSelectedTreeIndices() -> [TreeIndex] {
         return outlineView.selectedRowIndexes
