@@ -28,12 +28,16 @@ extension TreeIndex: Comparable {
     }
 }
 
+@dynamicMemberLookup
 public struct TreeNode<Value> {
     public var value: Value
     public var children: [Self]
     public init(_ value: Value, children: [TreeNode<Value>] = []) {
         self.value = value
         self.children = children
+    }
+    subscript<Property>(dynamicMember keyPath: KeyPath<Value, Property>) -> Property {
+        value[keyPath: keyPath]
     }
 }
 
