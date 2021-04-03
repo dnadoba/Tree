@@ -1,51 +1,29 @@
-# name: Swift
+ name: Swift
 
-# on:
-#   push:
-#     branches: [ main ]
-#   pull_request:
-#     branches: [ main ]
+ on:
+   push:
+     branches: [ main ]
+   pull_request:
+     branches: [ main ]
 
-# jobs:
-#   test-on-macOS-and-iOS:
-#     runs-on: macos-11.0
-#     steps:
-#     - uses: actions/checkout@v2
-#     - uses: maxim-lobanov/setup-xcode@v1
-#       with:
-#         xcode-version: '12.5'
-#     - name: remove workspace
-#       run: rm -rf Tree.xcworkspace
-#     - name: Test on iOS Simulator
-#       run: >
-#         xcodebuild test
-#         -scheme Tree
-#         -parallelizeTargets
-#         -parallel-testing-enabled
-#         -sdk:iphonesimulator
-#         -destination:'platform=iOS Simulator,name=iPhone 12'
-        
-#     - name: Test on macOS
-#       run: >
-#         xcodebuild test
-#         -scheme Tree
-#         -parallelizeTargets
-#         -parallel-testing-enabled
-#         -destination 'platform=macOS'
+ jobs:
+   test-on-macOS:
+     runs-on: macos-latest
+     steps:
+     - uses: actions/checkout@v2
+     - name: Test on macOS
+       run: >
+         swift test
+         --parallel
+         --enable-test-discovery
     
-#   test-on-linux:
-#     runs-on: ubuntu-latest
+   test-on-linux:
+     runs-on: ubuntu-latest
 
-#     steps:
-#     - uses: actions/checkout@v2
-#     # use Swift 5.4
-#     - uses: sersoft-gmbh/SwiftyActions@v1
-#       with:
-#           branch-name: release/5.4
-#           version-tag: swift-5.4-DEVELOPMENT-SNAPSHOT-2021-03-25-a
-#     - name: Test on Linux
-#       # filter regex excludes all tests targets which contain the word "Performance" in their name
-#       run: >
-#         swift test
-#         --parallel
-#         --enable-test-discovery
+     steps:
+     - uses: actions/checkout@v2
+     - name: Test on Linux
+       run: >
+         swift test
+         --parallel
+         --enable-test-discovery
