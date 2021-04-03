@@ -1,0 +1,929 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/OutlineView.swift",
+      "line": 20,
+      "symbol": "NSOutlineView.animateChanges(_:removeAnimation:insertAnimation:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/OutlineView.swift",
+      "line": 43,
+      "symbol": "NSOutlineView.expandNewSubtrees(old:new:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 8,
+      "symbol": "TreeIndex",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 9,
+      "symbol": "TreeIndex.Slice",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 11,
+      "symbol": "TreeIndex.init(indices:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 16,
+      "symbol": "TreeIndex",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 19,
+      "symbol": "TreeIndex",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 32,
+      "symbol": "TreeNode",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 33,
+      "symbol": "TreeNode.value",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 34,
+      "symbol": "TreeNode.children",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 35,
+      "symbol": "TreeNode.init(_:children:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 44,
+      "symbol": "TreeNode",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 45,
+      "symbol": "TreeNode",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 47,
+      "symbol": "TreeNode",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 56,
+      "symbol": "TreeNode",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 62,
+      "symbol": "TreeNode.descendantCount",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 70,
+      "symbol": "TreeNode.subscript(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.subscript",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 109,
+      "symbol": "TreeList",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 170,
+      "symbol": "TreeNode",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 171,
+      "symbol": "TreeNode.parentIndex(of:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 176,
+      "symbol": "TreeList",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 177,
+      "symbol": "TreeList.nodes",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 178,
+      "symbol": "TreeList.init(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 183,
+      "symbol": "TreeList",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 184,
+      "symbol": "TreeList",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 186,
+      "symbol": "TreeList",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 191,
+      "symbol": "TreeList",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 192,
+      "symbol": "TreeList",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 262,
+      "symbol": "TreeList",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 263,
+      "symbol": "TreeList.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 266,
+      "symbol": "TreeList.remove(at:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 271,
+      "symbol": "TreeList.removeSubrange(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 283,
+      "symbol": "TreeList.remove(at:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 296,
+      "symbol": "TreeList.insert(contentsOf:at:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 311,
+      "symbol": "TreeNode",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 319,
+      "symbol": "TreeList",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 327,
+      "symbol": "TreeList",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 328,
+      "symbol": "TreeList.insert(_:at:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 333,
+      "symbol": "TreeList",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 334,
+      "symbol": "TreeList.depth(of:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 337,
+      "symbol": "TreeList.parentIndex(of:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 340,
+      "symbol": "TreeList.childIndex(of:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 343,
+      "symbol": "TreeList.addChildIndex(_:to:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 348,
+      "symbol": "TreeList",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 349,
+      "symbol": "TreeList.neighbours(at:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 353,
+      "symbol": "TreeList.canInsert(at:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 360,
+      "symbol": "TreeNode",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 361,
+      "symbol": "TreeNode.mapValues(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 364,
+      "symbol": "TreeNode.mapValuesWithNode(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 367,
+      "symbol": "TreeNode.mapValuesWithParents(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 382,
+      "symbol": "TreeNode.mapChildrenWithParents(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 397,
+      "symbol": "TreeList",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 398,
+      "symbol": "TreeList.mapValues(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 401,
+      "symbol": "TreeList.mapValuesWithNode(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 404,
+      "symbol": "TreeList.mapValuesWithParents(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 407,
+      "symbol": "TreeList.mapChildrenWithParent(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 413,
+      "symbol": "TreeList.mapChildrenWithParents(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 425,
+      "symbol": "TreeNode",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 426,
+      "symbol": "TreeNode.compactMapValues(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 433,
+      "symbol": "TreeList",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 434,
+      "symbol": "TreeList.compactMapValues(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 442,
+      "symbol": "TreeNode",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 443,
+      "symbol": "TreeNode.filterValues(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 450,
+      "symbol": "TreeList",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 451,
+      "symbol": "TreeList.filterValues(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 458,
+      "symbol": "TreeList",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 522,
+      "symbol": "TreeNode",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 523,
+      "symbol": "TreeNode.removeAllChildren(where:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 531,
+      "symbol": "TreeList",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/Tree.swift",
+      "line": 532,
+      "symbol": "TreeList.removeAll(where:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/TreeDifference.swift",
+      "line": 10,
+      "symbol": "TreeDifference",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/TreeDifference.swift",
+      "line": 11,
+      "symbol": "TreeDifference.Index",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/TreeDifference.swift",
+      "line": 12,
+      "symbol": "TreeDifference.Index.parent",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/TreeDifference.swift",
+      "line": 13,
+      "symbol": "TreeDifference.Index.depth",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/TreeDifference.swift",
+      "line": 14,
+      "symbol": "TreeDifference.Index.offset",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/TreeDifference.swift",
+      "line": 16,
+      "symbol": "TreeDifference.Change",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/TreeDifference.swift",
+      "line": 17,
+      "symbol": "TreeDifference.Change.insert(index:value:associatedWith:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/TreeDifference.swift",
+      "line": 18,
+      "symbol": "TreeDifference.Change.remove(index:value:associatedWith:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/TreeDifference.swift",
+      "line": 56,
+      "symbol": "TreeDifference.changes",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/TreeDifference.swift",
+      "line": 57,
+      "symbol": "TreeDifference.insertions",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/TreeDifference.swift",
+      "line": 61,
+      "symbol": "TreeDifference.removals",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/TreeDifference.swift",
+      "line": 66,
+      "symbol": "TreeDifference.init(changes:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/TreeDifference.swift",
+      "line": 91,
+      "symbol": "TreeDifference.Index",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/TreeDifference.swift",
+      "line": 97,
+      "symbol": "TreeDifference.Change",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/TreeDifference.swift",
+      "line": 111,
+      "symbol": "TreeList.difference(from:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/TreeDifference.swift",
+      "line": 173,
+      "symbol": "TreeDifference",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/TreeDifference.swift",
+      "line": 174,
+      "symbol": "TreeDifference.inferringMoves()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/Tree/TreeDifference.swift",
+      "line": 198,
+      "symbol": "TreeList.applying(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 12,
+      "symbol": "ReferenceItem",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 13,
+      "symbol": "ReferenceItem.value",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 14,
+      "symbol": "ReferenceItem.init(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 18,
+      "symbol": "ReferenceItem.debugDescription",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 31,
+      "symbol": "OutlineViewTreeDataSource",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 32,
+      "symbol": "OutlineViewTreeDataSource.ItemReference",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 33,
+      "symbol": "OutlineViewTreeDataSource.DragAndDrop",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 34,
+      "symbol": "OutlineViewTreeDataSource.DragAndDrop.draggingSessionWillBegin",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 35,
+      "symbol": "OutlineViewTreeDataSource.DragAndDrop.pasteboardWriterForItem",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 36,
+      "symbol": "OutlineViewTreeDataSource.DragAndDrop.updateDraggingItemsForDrag",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 37,
+      "symbol": "OutlineViewTreeDataSource.DragAndDrop.validateDrop",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 38,
+      "symbol": "OutlineViewTreeDataSource.DragAndDrop.acceptDrop",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 39,
+      "symbol": "OutlineViewTreeDataSource.DragAndDrop.draggingSessionEnded",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 40,
+      "symbol": "OutlineViewTreeDataSource.DragAndDrop.init(draggingSessionWillBegin:pasteboardWriterForItem:updateDraggingItemsForDrag:validateDrop:acceptDrop:draggingSessionEnded:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 49,
+      "symbol": "OutlineViewTreeDataSource.outlineView",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 50,
+      "symbol": "OutlineViewTreeDataSource.objectForItem",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 51,
+      "symbol": "OutlineViewTreeDataSource.isItemExpandable",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 52,
+      "symbol": "OutlineViewTreeDataSource.dragAndDrop",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 56,
+      "symbol": "OutlineViewTreeDataSource.referenceTree",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 58,
+      "symbol": "OutlineViewTreeDataSource.init(outlineView:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 64,
+      "symbol": "OutlineViewTreeDataSource.updateAndAnimatedChanges(_:removeAnimation:insertAnimation:expandNewSections:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 92,
+      "symbol": "OutlineViewTreeDataSource.getTreeNode(for:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 97,
+      "symbol": "OutlineViewTreeDataSource.outlineView(_:isItemExpandable:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 100,
+      "symbol": "OutlineViewTreeDataSource.outlineView(_:numberOfChildrenOfItem:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 106,
+      "symbol": "OutlineViewTreeDataSource.outlineView(_:child:ofItem:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 115,
+      "symbol": "OutlineViewTreeDataSource.outlineView(_:objectValueFor:byItem:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 120,
+      "symbol": "OutlineViewTreeDataSource.outlineView(_:draggingSession:willBeginAt:forItems:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 123,
+      "symbol": "OutlineViewTreeDataSource.outlineView(_:pasteboardWriterForItem:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 126,
+      "symbol": "OutlineViewTreeDataSource.outlineView(_:updateDraggingItemsForDrag:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 129,
+      "symbol": "OutlineViewTreeDataSource.outlineView(_:validateDrop:proposedItem:proposedChildIndex:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 132,
+      "symbol": "OutlineViewTreeDataSource.outlineView(_:acceptDrop:item:childIndex:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 135,
+      "symbol": "OutlineViewTreeDataSource.outlineView(_:draggingSession:endedAt:operation:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 141,
+      "symbol": "OutlineViewTreeDataSource",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 142,
+      "symbol": "OutlineViewTreeDataSource.getValueFromReference(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 148,
+      "symbol": "OutlineViewTreeDataSource.getValueFromReference(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 151,
+      "symbol": "OutlineViewTreeDataSource.getTreeIndex(for:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 154,
+      "symbol": "OutlineViewTreeDataSource.getTreeIndex(for:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 158,
+      "symbol": "OutlineViewTreeDataSource.getTreeNode(for:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 161,
+      "symbol": "OutlineViewTreeDataSource.getTreeNode(for:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 164,
+      "symbol": "OutlineViewTreeDataSource.getTreeIndex(for:childIndex:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 169,
+      "symbol": "OutlineViewTreeDataSource.getReference(for:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 175,
+      "symbol": "OutlineViewTreeDataSource",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 176,
+      "symbol": "OutlineViewTreeDataSource.getSelectedTreeIndices()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/Tree/Tree/Sources/TreeUI/OutlineViewTreeDataSource.swift",
+      "line": 181,
+      "symbol": "OutlineViewTreeDataSource.getSelectedItems()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/runner/work/Tree/Tree"
+}

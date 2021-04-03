@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+    <script src="js/lunr.min.js" defer></script>
+    <script src="js/typeahead.jquery.js" defer></script>
+    <script src="js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+    <a title="  Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="index.html"> Docs</a> (18% documented)</p>
+        <p class="header-right">
+          <form role="search" action="search.json">
+            <input type="text" placeholder="Search documentation" data-typeahead>
+          </form>
+        </p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="index.html"> Reference</a>
+        <img id="carat" src="img/carat.png" />
+          Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/OutlineViewTreeDataSource.html">OutlineViewTreeDataSource</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/OutlineViewTreeDataSource/DragAndDrop.html">– DragAndDrop</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/ReferenceItem.html">ReferenceItem</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Extensions/NSOutlineView.html">NSOutlineView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/TreeList.html">TreeList</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/TreeNode.html">TreeNode</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Structs/TreeBuilder.html">TreeBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/TreeDifference.html">TreeDifference</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/TreeDifference/Index.html">– Index</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/TreeDifference/Change.html">– Change</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/TreeIndex.html">TreeIndex</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/TreeList.html">TreeList</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/TreeNode.html">TreeNode</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            
+            <h1 id='tree-general-tree-data-structure-tree-diffing-nsoutlineview-and-swiftui-support' class='heading'>Tree - general tree data structure, tree diffing, NSOutlineView and SwiftUI support</h1>
+
+<p>This package primarily includes a general tree data structure. 
+It also includes a tree diffing algorithm and <code><a href="Classes/OutlineViewTreeDataSource.html">OutlineViewTreeDataSource</a></code> that allows to use Swift value types with <code>NSOutlineView</code> 
+A demo App can be found in the <code>Tree macOS</code> folder and the <code>NSOutlineView</code> Playground with support for drag and drop, undo/redo and animations.</p>
+
+<p><code><a href="Structs/TreeNode.html">TreeNode</a></code> and <code><a href="Structs/TreeList.html">TreeList</a></code> can also be used as a model for <code>OutlineGroup</code> in SwiftUI applications. To see it in action, take a look at the <code>SwiftUI-iOS</code> or <code>SwiftUI-macOS</code> Playground. </p>
+<h3 id='code-treenode-code' class='heading'><code><a href="Structs/TreeNode.html">TreeNode</a></code></h3>
+
+<p><code><a href="Structs/TreeNode.html">TreeNode</a></code> is a general tree data structure implementation as a value type.
+ Each <code><a href="Structs/TreeNode.html">TreeNode</a></code> has a <code>value</code> and 0 or more <code>children</code>. It is actually just a struct which holds a value and an array of child nodes:</p>
+<pre class="highlight swift"><code> <span class="kd">struct</span> <span class="kt">TreeNode</span><span class="o">&lt;</span><span class="kt">Value</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">Value</span>
+    <span class="k">var</span> <span class="nv">children</span><span class="p">:</span> <span class="p">[</span><span class="kt">TreeNode</span><span class="o">&lt;</span><span class="kt">Value</span><span class="o">&gt;</span><span class="p">]</span>
+ <span class="p">}</span>
+</code></pre>
+
+<p>With the help of <code>@resultBuilder</code> you can create a <code><a href="Structs/TreeNode.html">TreeNode</a></code> like this:</p>
+
+<blockquote>
+<p>Note: <code>@resultBuilder</code> requires Swift 5.4 or higher (e.g. Xcode 12.5)</p>
+</blockquote>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">treeNode</span> <span class="o">=</span> <span class="kt">TreeNode</span><span class="p">(</span><span class="s">"root node"</span><span class="p">)</span> <span class="p">{</span>
+    <span class="s">"child 1"</span>
+    <span class="s">"child 2"</span>
+    <span class="kt">TreeNode</span><span class="p">(</span><span class="s">"child 3"</span><span class="p">)</span> <span class="p">{</span>
+        <span class="s">"child of child 3"</span>
+    <span class="p">}</span>
+    <span class="s">"child 4"</span>
+<span class="p">}</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">treeNode</span><span class="p">)</span>
+<span class="c1">//  - root node</span>
+<span class="c1">//    - child 1</span>
+<span class="c1">//    - child 2</span>
+<span class="c1">//    - child 3</span>
+<span class="c1">//      - child of child 3</span>
+<span class="c1">//    - child 4</span>
+</code></pre>
+<h3 id='code-treelist-code-a-list-of-code-treenode-code-s' class='heading'><code><a href="Structs/TreeList.html">TreeList</a></code> - a list of <code><a href="Structs/TreeNode.html">TreeNode</a></code>s</h3>
+
+<p><code><a href="Structs/TreeList.html">TreeList</a></code> is a list of <code><a href="Structs/TreeNode.html">TreeNode</a></code>s, which enables multiple nodes to be at level 0.
+  In addition, <code><a href="Structs/TreeList.html">TreeList</a></code> conforms to <code>MutableCollection</code> and <code>BidirectionalCollection</code> which enables a ton of useful algorithms.</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">treeList</span> <span class="o">=</span> <span class="kt">TreeList</span><span class="o">&lt;</span><span class="kt">String</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="s">"root 1"</span>
+    <span class="s">"root 2"</span>
+    <span class="kt">TreeNode</span><span class="p">(</span><span class="s">"root 3"</span><span class="p">)</span> <span class="p">{</span>
+        <span class="s">"child of root 3"</span>
+    <span class="p">}</span>
+    <span class="s">"root 4"</span>
+<span class="p">}</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">treeList</span><span class="p">)</span>
+<span class="c1">//  - root 1</span>
+<span class="c1">//  - root 2</span>
+<span class="c1">//  - root 3</span>
+<span class="c1">//      - child of root 3</span>
+<span class="c1">//  - root 4</span>
+</code></pre>
+<h3 id='additional-methods' class='heading'>additional methods</h3>
+
+<p><code><a href="Structs/TreeNode.html">TreeNode</a></code> and <code><a href="Structs/TreeList.html">TreeList</a></code> have a similar API.
+ They both support special map, compactMap and filter operations:</p>
+<pre class="highlight swift"><code> <span class="kd">extension</span> <span class="kt">TreeNode</span> <span class="p">{</span>
+     <span class="kd">func</span> <span class="n">mapValues</span><span class="o">&lt;</span><span class="kt">NewValue</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">transform</span><span class="p">:</span> <span class="p">(</span><span class="kt">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">NewValue</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">TreeNode</span><span class="o">&lt;</span><span class="kt">NewValue</span><span class="o">&gt;</span>
+     <span class="kd">func</span> <span class="n">mapValuesWithNode</span><span class="o">&lt;</span><span class="kt">NewValue</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">transform</span><span class="p">:</span> <span class="p">(</span><span class="kt">TreeNode</span><span class="o">&lt;</span><span class="kt">Value</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">NewValue</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">TreeNode</span><span class="o">&lt;</span><span class="kt">NewValue</span><span class="o">&gt;</span>
+     <span class="kd">func</span> <span class="n">mapValuesWithParents</span><span class="o">&lt;</span><span class="kt">NewValue</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">transform</span><span class="p">:</span> <span class="p">([</span><span class="kt">Value</span><span class="p">],</span> <span class="kt">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">NewValue</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">TreeNode</span><span class="o">&lt;</span><span class="kt">NewValue</span><span class="o">&gt;</span>
+     <span class="kd">func</span> <span class="n">mapChildrenWithParents</span><span class="o">&lt;</span><span class="kt">NewValue</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">transform</span><span class="p">:</span> <span class="p">([</span><span class="kt">Value</span><span class="p">],</span> <span class="p">[</span><span class="kt">Value</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kt">NewValue</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">NewValue</span><span class="p">]</span>
+
+     <span class="kd">func</span> <span class="n">compactMapValues</span><span class="o">&lt;</span><span class="kt">NewValue</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">transform</span><span class="p">:</span> <span class="p">(</span><span class="kt">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">NewValue</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">TreeNode</span><span class="o">&lt;</span><span class="kt">NewValue</span><span class="o">&gt;</span><span class="p">?</span>
+
+     <span class="kd">func</span> <span class="nf">filterValues</span><span class="p">(</span><span class="n">_</span> <span class="nv">isIncluded</span><span class="p">:</span> <span class="p">(</span><span class="kt">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">TreeNode</span><span class="o">&lt;</span><span class="kt">Value</span><span class="o">&gt;</span>
+ <span class="p">}</span>
+</code></pre>
+
+<p>In addition, they support moving nodes which is useful for implementing drag and drop:</p>
+<pre class="highlight swift"><code> <span class="kd">extension</span> <span class="kt">TreeList</span> <span class="k">where</span> <span class="kt">Value</span> <span class="p">:</span> <span class="kt">Hashable</span> <span class="p">{</span>
+     <span class="c1">/// Moves the TreeNodes at the given `sourceIndices` to `insertIndex`.</span>
+     <span class="c1">///  The `sourceIndices` and `insertIndex` are both specified in the before state of the tree.</span>
+     <span class="c1">///  If elements are removed before the `insertIndex`, the `insertIndex` will be adjusted.</span>
+     <span class="c1">///</span>
+     <span class="c1">///  The move operation will fail and return nil, if the `insertIndex` is a child of one of the moved TreeNodes.</span>
+     <span class="c1">/// - Parameters:</span>
+     <span class="c1">///   - sourceIndices: the indices of the elements that should be moved</span>
+     <span class="c1">///   - insertIndex: the insertion index to move the elements to</span>
+     <span class="c1">/// - Returns: A new Tree with the specified changes or nil if the the move was not possible</span>
+     <span class="kd">public</span> <span class="kd">func</span> <span class="nf">move</span><span class="p">(</span><span class="n">indices</span> <span class="nv">sourceIndices</span><span class="p">:</span> <span class="p">[</span><span class="kt">TreeIndex</span><span class="p">],</span> <span class="n">to</span> <span class="nv">insertIndex</span><span class="p">:</span> <span class="kt">TreeIndex</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">TreeList</span><span class="o">&lt;</span><span class="kt">Value</span><span class="o">&gt;</span><span class="p">?</span>
+ <span class="p">}</span>
+</code></pre>
+<h3 id='code-nsoutlineview-code' class='heading'><code>NSOutlineView</code></h3>
+
+<blockquote>
+<p>Note: <code><a href="Classes/OutlineViewTreeDataSource.html">OutlineViewTreeDataSource</a></code> is defined in a seperate module called <code>TreeUI</code>. You need to <code>import TreeUI</code> to use it.</p>
+</blockquote>
+
+<p><code><a href="Structs/TreeList.html">TreeList</a></code> and <code><a href="Structs/TreeNode.html">TreeNode</a></code> were originaly created to be used as data model for NSOutlineView. Therefore, this package includes a tree diffing algorithm and <code><a href="Classes/OutlineViewTreeDataSource.html">OutlineViewTreeDataSource</a></code> that allows to use Swift value types with <code>NSOutlineView</code>. Take a look at NSOutlineView Playground or the Tree macOS example Xcode project which are part of this repository.
+ The diffing algorithm can also be used to efficiently send only what has changed over the network to another peer/server.</p>
+<h3 id='swiftui' class='heading'>SwiftUI</h3>
+
+<p><code><a href="Structs/TreeNode.html">TreeNode</a></code> and <code><a href="Structs/TreeList.html">TreeList</a></code> can be used with SwiftUI as well.</p>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">SwiftUI</span>
+<span class="kd">extension</span> <span class="kt">TreeNode</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">optionalChildren</span><span class="p">:</span> <span class="p">[</span><span class="kt">TreeNode</span><span class="o">&lt;</span><span class="kt">Value</span><span class="o">&gt;</span><span class="p">]?</span> <span class="p">{</span>
+        <span class="n">children</span><span class="o">.</span><span class="n">isEmpty</span> <span class="p">?</span> <span class="nv">nil</span> <span class="p">:</span> <span class="n">children</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="kd">struct</span> <span class="kt">ContentView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="kd">@State</span> <span class="k">var</span> <span class="nv">tree</span><span class="p">:</span> <span class="kt">TreeList</span><span class="o">&lt;</span><span class="kt">String</span><span class="o">&gt;</span>
+
+    <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
+        <span class="kt">List</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">nodes</span><span class="p">,</span> <span class="nv">id</span><span class="p">:</span> <span class="err">\</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="nv">children</span><span class="p">:</span> <span class="err">\</span><span class="o">.</span><span class="n">optionalChildren</span><span class="p">)</span> <span class="p">{</span> <span class="n">node</span> <span class="k">in</span>
+            <span class="kt">Text</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>For a full example take a look into the SwiftUI-iOS or SwiftUI-macOS Playground.</p>
+
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2021 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2021-04-03)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

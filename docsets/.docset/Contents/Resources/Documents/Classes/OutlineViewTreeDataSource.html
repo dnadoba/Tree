@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>OutlineViewTreeDataSource Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/OutlineViewTreeDataSource" class="dashAnchor"></a>
+    <a title="OutlineViewTreeDataSource Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html"> Docs</a> (18% documented)</p>
+        <p class="header-right">
+          <form role="search" action="../search.json">
+            <input type="text" placeholder="Search documentation" data-typeahead>
+          </form>
+        </p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html"> Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        OutlineViewTreeDataSource Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/OutlineViewTreeDataSource.html">OutlineViewTreeDataSource</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/OutlineViewTreeDataSource/DragAndDrop.html">– DragAndDrop</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ReferenceItem.html">ReferenceItem</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/NSOutlineView.html">NSOutlineView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/TreeList.html">TreeList</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/TreeNode.html">TreeNode</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/TreeBuilder.html">TreeBuilder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TreeDifference.html">TreeDifference</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TreeDifference/Index.html">– Index</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TreeDifference/Change.html">– Change</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TreeIndex.html">TreeIndex</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TreeList.html">TreeList</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TreeNode.html">TreeNode</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>OutlineViewTreeDataSource</h1>
+              <div class="declaration">
+                <div class="language">
+                  
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">OutlineViewTreeDataSource</span><span class="o">&lt;</span><span class="kt">Item</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">NSObject</span><span class="p">,</span> <span class="kt">NSOutlineViewDataSource</span> <span class="k">where</span> <span class="kt">Item</span> <span class="p">:</span> <span class="kt">Hashable</span></code></pre>
+
+                </div>
+              </div>
+            <p>Undocumented</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC13ItemReferencea"></a>
+                    <a name="//apple_ref/swift/Alias/ItemReference" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC13ItemReferencea">ItemReference</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">ItemReference</span> <span class="o">=</span> <span class="kt"><a href="../Classes/ReferenceItem.html">ReferenceItem</a></span><span class="o">&lt;</span><span class="kt">Item</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC11DragAndDropV"></a>
+                    <a name="//apple_ref/swift/Struct/DragAndDrop" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC11DragAndDropV">DragAndDrop</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="../Classes/OutlineViewTreeDataSource/DragAndDrop.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">DragAndDrop</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC07outlineD0So09NSOutlineD0Cvp"></a>
+                    <a name="//apple_ref/swift/Property/outlineView" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC07outlineD0So09NSOutlineD0Cvp">outlineView</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">outlineView</span><span class="p">:</span> <span class="kt">NSOutlineView</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC13objectForItemyypSgSo13NSTableColumnCSg_xtcvp"></a>
+                    <a name="//apple_ref/swift/Property/objectForItem" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC13objectForItemyypSgSo13NSTableColumnCSg_xtcvp">objectForItem</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">objectForItem</span><span class="p">:</span> <span class="p">(</span><span class="kt">NSTableColumn</span><span class="p">?,</span> <span class="kt">Item</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Any</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC16isItemExpandableySbxcvp"></a>
+                    <a name="//apple_ref/swift/Property/isItemExpandable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC16isItemExpandableySbxcvp">isItemExpandable</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">isItemExpandable</span><span class="p">:</span> <span class="p">(</span><span class="kt">Item</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC11dragAndDropAC04DraghI0Vyx_Gvp"></a>
+                    <a name="//apple_ref/swift/Property/dragAndDrop" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC11dragAndDropAC04DraghI0Vyx_Gvp">dragAndDrop</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">dragAndDrop</span><span class="p">:</span> <span class="kt"><a href="../Classes/OutlineViewTreeDataSource/DragAndDrop.html">DragAndDrop</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC09referenceA00A00A4ListVyAA13ReferenceItemCyxGGvp"></a>
+                    <a name="//apple_ref/swift/Property/referenceTree" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC09referenceA00A00A4ListVyAA13ReferenceItemCyxGGvp">referenceTree</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">private(set)</span> <span class="k">var</span> <span class="nv">referenceTree</span><span class="p">:</span> <span class="kt"><a href="../Structs/TreeList.html">TreeList</a></span><span class="o">&lt;</span><span class="kt"><a href="../Classes/OutlineViewTreeDataSource.html#/s:6TreeUI011OutlineViewA10DataSourceC13ItemReferencea">ItemReference</a></span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC07outlineD0ACyxGSo09NSOutlineD0C_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(outlineView:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC07outlineD0ACyxGSo09NSOutlineD0C_tcfc">init(outlineView:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">outlineView</span><span class="p">:</span> <span class="kt">NSOutlineView</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC24updateAndAnimatedChanges_15removeAnimation06insertL017expandNewSectionsy0A00A4ListVyxG_So07NSTabledL7OptionsVAMSbtF"></a>
+                    <a name="//apple_ref/swift/Method/updateAndAnimatedChanges(_:removeAnimation:insertAnimation:expandNewSections:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC24updateAndAnimatedChanges_15removeAnimation06insertL017expandNewSectionsy0A00A4ListVyxG_So07NSTabledL7OptionsVAMSbtF">updateAndAnimatedChanges(_:<wbr>removeAnimation:<wbr>insertAnimation:<wbr>expandNewSections:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">updateAndAnimatedChanges</span><span class="p">(</span>
+    <span class="n">_</span> <span class="nv">newTree</span><span class="p">:</span> <span class="kt"><a href="../Structs/TreeList.html">TreeList</a></span><span class="o">&lt;</span><span class="kt">Item</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="nv">removeAnimation</span><span class="p">:</span> <span class="kt">NSTableView</span><span class="o">.</span><span class="kt">AnimationOptions</span> <span class="o">=</span> <span class="p">[</span><span class="o">.</span><span class="n">effectFade</span><span class="p">,</span> <span class="o">.</span><span class="n">slideUp</span><span class="p">],</span>
+    <span class="nv">insertAnimation</span><span class="p">:</span> <span class="kt">NSTableView</span><span class="o">.</span><span class="kt">AnimationOptions</span> <span class="o">=</span> <span class="p">[</span><span class="o">.</span><span class="n">effectFade</span><span class="p">,</span> <span class="o">.</span><span class="n">slideDown</span><span class="p">],</span>
+    <span class="nv">expandNewSections</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span>
+<span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC03getA4Node3for0A00aH0VyAA13ReferenceItemCyxGGSgx_tF"></a>
+                    <a name="//apple_ref/swift/Method/getTreeNode(for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC03getA4Node3for0A00aH0VyAA13ReferenceItemCyxGGSgx_tF">getTreeNode(for:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getTreeNode</span><span class="p">(</span><span class="k">for</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">Item</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/TreeNode.html">TreeNode</a></span><span class="o">&lt;</span><span class="kt"><a href="../Classes/OutlineViewTreeDataSource.html#/s:6TreeUI011OutlineViewA10DataSourceC13ItemReferencea">ItemReference</a></span><span class="o">&gt;</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Data%20Source"></a>
+                <a name="//apple_ref/swift/Section/Data Source" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Data%20Source"></a>
+                  <h3 class="section-name"><p>Data Source</p>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC07outlineD0_16isItemExpandableSbSo09NSOutlineD0C_yptF"></a>
+                    <a name="//apple_ref/swift/Method/outlineView(_:isItemExpandable:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC07outlineD0_16isItemExpandableSbSo09NSOutlineD0C_yptF">outlineView(_:<wbr>isItemExpandable:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">outlineView</span><span class="p">(</span><span class="n">_</span> <span class="nv">outlineView</span><span class="p">:</span> <span class="kt">NSOutlineView</span><span class="p">,</span> <span class="n"><a href="../Classes/OutlineViewTreeDataSource.html#/s:6TreeUI011OutlineViewA10DataSourceC16isItemExpandableySbxcvp">isItemExpandable</a></span> <span class="nv">item</span><span class="p">:</span> <span class="kt">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC07outlineD0_016numberOfChildrenI4ItemSiSo09NSOutlineD0C_ypSgtF"></a>
+                    <a name="//apple_ref/swift/Method/outlineView(_:numberOfChildrenOfItem:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC07outlineD0_016numberOfChildrenI4ItemSiSo09NSOutlineD0C_ypSgtF">outlineView(_:<wbr>numberOfChildrenOfItem:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">outlineView</span><span class="p">(</span><span class="n">_</span> <span class="nv">outlineView</span><span class="p">:</span> <span class="kt">NSOutlineView</span><span class="p">,</span> <span class="n">numberOfChildrenOfItem</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">Any</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC07outlineD0_5child6ofItemypSo09NSOutlineD0C_SiypSgtF"></a>
+                    <a name="//apple_ref/swift/Method/outlineView(_:child:ofItem:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC07outlineD0_5child6ofItemypSo09NSOutlineD0C_SiypSgtF">outlineView(_:<wbr>child:<wbr>ofItem:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">outlineView</span><span class="p">(</span><span class="n">_</span> <span class="nv">outlineView</span><span class="p">:</span> <span class="kt">NSOutlineView</span><span class="p">,</span> <span class="n">child</span> <span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="n">ofItem</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">Any</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Any</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC07outlineD0_14objectValueFor6byItemypSgSo09NSOutlineD0C_So13NSTableColumnCSgAGtF"></a>
+                    <a name="//apple_ref/swift/Method/outlineView(_:objectValueFor:byItem:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC07outlineD0_14objectValueFor6byItemypSgSo09NSOutlineD0C_So13NSTableColumnCSgAGtF">outlineView(_:<wbr>objectValueFor:<wbr>byItem:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">outlineView</span><span class="p">(</span><span class="n">_</span> <span class="nv">outlineView</span><span class="p">:</span> <span class="kt">NSOutlineView</span><span class="p">,</span> <span class="n">objectValueFor</span> <span class="nv">tableColumn</span><span class="p">:</span> <span class="kt">NSTableColumn</span><span class="p">?,</span> <span class="n">byItem</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">Any</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Any</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Drag%20and%20Drop"></a>
+                <a name="//apple_ref/swift/Section/Drag and Drop" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Drag%20and%20Drop"></a>
+                  <h3 class="section-name"><p>Drag and Drop</p>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC07outlineD0_15draggingSession11willBeginAt8forItemsySo09NSOutlineD0C_So010NSDraggingI0CSo7CGPointVSayypGtF"></a>
+                    <a name="//apple_ref/swift/Method/outlineView(_:draggingSession:willBeginAt:forItems:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC07outlineD0_15draggingSession11willBeginAt8forItemsySo09NSOutlineD0C_So010NSDraggingI0CSo7CGPointVSayypGtF">outlineView(_:<wbr>draggingSession:<wbr>willBeginAt:<wbr>forItems:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">outlineView</span><span class="p">(</span><span class="n">_</span> <span class="nv">outlineView</span><span class="p">:</span> <span class="kt">NSOutlineView</span><span class="p">,</span> <span class="n">draggingSession</span> <span class="nv">session</span><span class="p">:</span> <span class="kt">NSDraggingSession</span><span class="p">,</span> <span class="n">willBeginAt</span> <span class="nv">screenPoint</span><span class="p">:</span> <span class="kt">NSPoint</span><span class="p">,</span> <span class="n">forItems</span> <span class="nv">draggedItems</span><span class="p">:</span> <span class="p">[</span><span class="kt">Any</span><span class="p">])</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC07outlineD0_23pasteboardWriterForItemSo19NSPasteboardWriting_pSgSo09NSOutlineD0C_yptF"></a>
+                    <a name="//apple_ref/swift/Method/outlineView(_:pasteboardWriterForItem:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC07outlineD0_23pasteboardWriterForItemSo19NSPasteboardWriting_pSgSo09NSOutlineD0C_yptF">outlineView(_:<wbr>pasteboardWriterForItem:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">outlineView</span><span class="p">(</span><span class="n">_</span> <span class="nv">outlineView</span><span class="p">:</span> <span class="kt">NSOutlineView</span><span class="p">,</span> <span class="n">pasteboardWriterForItem</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">NSPasteboardWriting</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC07outlineD0_26updateDraggingItemsForDragySo09NSOutlineD0C_So14NSDraggingInfo_ptF"></a>
+                    <a name="//apple_ref/swift/Method/outlineView(_:updateDraggingItemsForDrag:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC07outlineD0_26updateDraggingItemsForDragySo09NSOutlineD0C_So14NSDraggingInfo_ptF">outlineView(_:<wbr>updateDraggingItemsForDrag:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">outlineView</span><span class="p">(</span><span class="n">_</span> <span class="nv">outlineView</span><span class="p">:</span> <span class="kt">NSOutlineView</span><span class="p">,</span> <span class="n">updateDraggingItemsForDrag</span> <span class="nv">draggingInfo</span><span class="p">:</span> <span class="kt">NSDraggingInfo</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC07outlineD0_12validateDrop12proposedItem0J10ChildIndexSo15NSDragOperationVSo09NSOutlineD0C_So14NSDraggingInfo_pypSgSitF"></a>
+                    <a name="//apple_ref/swift/Method/outlineView(_:validateDrop:proposedItem:proposedChildIndex:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC07outlineD0_12validateDrop12proposedItem0J10ChildIndexSo15NSDragOperationVSo09NSOutlineD0C_So14NSDraggingInfo_pypSgSitF">outlineView(_:<wbr>validateDrop:<wbr>proposedItem:<wbr>proposedChildIndex:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">outlineView</span><span class="p">(</span><span class="n">_</span> <span class="nv">outlineView</span><span class="p">:</span> <span class="kt">NSOutlineView</span><span class="p">,</span> <span class="n">validateDrop</span> <span class="nv">info</span><span class="p">:</span> <span class="kt">NSDraggingInfo</span><span class="p">,</span> <span class="n">proposedItem</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">Any</span><span class="p">?,</span> <span class="n">proposedChildIndex</span> <span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">NSDragOperation</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC07outlineD0_10acceptDrop4item10childIndexSbSo09NSOutlineD0C_So14NSDraggingInfo_pypSgSitF"></a>
+                    <a name="//apple_ref/swift/Method/outlineView(_:acceptDrop:item:childIndex:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC07outlineD0_10acceptDrop4item10childIndexSbSo09NSOutlineD0C_So14NSDraggingInfo_pypSgSitF">outlineView(_:<wbr>acceptDrop:<wbr>item:<wbr>childIndex:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">outlineView</span><span class="p">(</span><span class="n">_</span> <span class="nv">outlineView</span><span class="p">:</span> <span class="kt">NSOutlineView</span><span class="p">,</span> <span class="n">acceptDrop</span> <span class="nv">info</span><span class="p">:</span> <span class="kt">NSDraggingInfo</span><span class="p">,</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">Any</span><span class="p">?,</span> <span class="n">childIndex</span> <span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC07outlineD0_15draggingSession7endedAt9operationySo09NSOutlineD0C_So010NSDraggingI0CSo7CGPointVSo15NSDragOperationVtF"></a>
+                    <a name="//apple_ref/swift/Method/outlineView(_:draggingSession:endedAt:operation:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC07outlineD0_15draggingSession7endedAt9operationySo09NSOutlineD0C_So010NSDraggingI0CSo7CGPointVSo15NSDragOperationVtF">outlineView(_:<wbr>draggingSession:<wbr>endedAt:<wbr>operation:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">outlineView</span><span class="p">(</span><span class="n">_</span> <span class="nv">outlineView</span><span class="p">:</span> <span class="kt">NSOutlineView</span><span class="p">,</span> <span class="n">draggingSession</span> <span class="nv">session</span><span class="p">:</span> <span class="kt">NSDraggingSession</span><span class="p">,</span> <span class="n">endedAt</span> <span class="nv">screenPoint</span><span class="p">:</span> <span class="kt">NSPoint</span><span class="p">,</span> <span class="nv">operation</span><span class="p">:</span> <span class="kt">NSDragOperation</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC21getValueFromReferenceyxypF"></a>
+                    <a name="//apple_ref/swift/Method/getValueFromReference(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC21getValueFromReferenceyxypF">getValueFromReference(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getValueFromReference</span><span class="p">(</span><span class="n">_</span> <span class="nv">referenceItem</span><span class="p">:</span> <span class="kt">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Item</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC21getValueFromReferenceyxSgypSgF"></a>
+                    <a name="//apple_ref/swift/Method/getValueFromReference(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC21getValueFromReferenceyxSgypSgF">getValueFromReference(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getValueFromReference</span><span class="p">(</span><span class="n">_</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">Any</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Item</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC03getA5Index3for0A00aH0VypSg_tF"></a>
+                    <a name="//apple_ref/swift/Method/getTreeIndex(for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC03getA5Index3for0A00aH0VypSg_tF">getTreeIndex(for:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getTreeIndex</span><span class="p">(</span><span class="k">for</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">Any</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/TreeIndex.html">TreeIndex</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC03getA5Index3for0A00aH0VxSg_tF"></a>
+                    <a name="//apple_ref/swift/Method/getTreeIndex(for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC03getA5Index3for0A00aH0VxSg_tF">getTreeIndex(for:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getTreeIndex</span><span class="p">(</span><span class="k">for</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">Item</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/TreeIndex.html">TreeIndex</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC03getA4Node3for0A00aH0VyAA13ReferenceItemCyxGGyp_tF"></a>
+                    <a name="//apple_ref/swift/Method/getTreeNode(for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC03getA4Node3for0A00aH0VyAA13ReferenceItemCyxGGyp_tF">getTreeNode(for:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getTreeNode</span><span class="p">(</span><span class="k">for</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/TreeNode.html">TreeNode</a></span><span class="o">&lt;</span><span class="kt"><a href="../Classes/OutlineViewTreeDataSource.html#/s:6TreeUI011OutlineViewA10DataSourceC13ItemReferencea">ItemReference</a></span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC03getA4Node3for0A00aH0VyAA13ReferenceItemCyxGGx_tF"></a>
+                    <a name="//apple_ref/swift/Method/getTreeNode(for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC03getA4Node3for0A00aH0VyAA13ReferenceItemCyxGGx_tF">getTreeNode(for:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getTreeNode</span><span class="p">(</span><span class="k">for</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">Item</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/TreeNode.html">TreeNode</a></span><span class="o">&lt;</span><span class="kt"><a href="../Classes/OutlineViewTreeDataSource.html#/s:6TreeUI011OutlineViewA10DataSourceC13ItemReferencea">ItemReference</a></span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC03getA5Index3for05childH00A00aH0VxSg_SitF"></a>
+                    <a name="//apple_ref/swift/Method/getTreeIndex(for:childIndex:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC03getA5Index3for05childH00A00aH0VxSg_SitF">getTreeIndex(for:<wbr>childIndex:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getTreeIndex</span><span class="p">(</span><span class="k">for</span> <span class="nv">parent</span><span class="p">:</span> <span class="kt">Item</span><span class="p">?,</span> <span class="n">childIndex</span> <span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/TreeIndex.html">TreeIndex</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC12getReference3forypSgx_tF"></a>
+                    <a name="//apple_ref/swift/Method/getReference(for:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC12getReference3forypSgx_tF">getReference(for:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getReference</span><span class="p">(</span><span class="k">for</span> <span class="nv">item</span><span class="p">:</span> <span class="kt">Item</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Any</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC011getSelectedA7IndicesSay0A00A5IndexVGyF"></a>
+                    <a name="//apple_ref/swift/Method/getSelectedTreeIndices()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC011getSelectedA7IndicesSay0A00A5IndexVGyF">getSelectedTreeIndices()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getSelectedTreeIndices</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt"><a href="../Structs/TreeIndex.html">TreeIndex</a></span><span class="p">]</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6TreeUI011OutlineViewA10DataSourceC16getSelectedItemsSayxGyF"></a>
+                    <a name="//apple_ref/swift/Method/getSelectedItems()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6TreeUI011OutlineViewA10DataSourceC16getSelectedItemsSayxGyF">getSelectedItems()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getSelectedItems</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">Item</span><span class="p">]</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2021 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2021-04-03)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
