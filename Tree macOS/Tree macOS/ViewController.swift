@@ -55,9 +55,14 @@ class TreeController: NSViewController {
     override func viewDidLoad() {
         outlineView.removeAllTableColumns()
         let column = NSTableColumn(identifier: Self.nameColumn)
-        column.title = "Name"
         column.dataCell = NSTextFieldCell()
+        
+        outlineView.headerView = nil
         outlineView.addTableColumn(column)
+        outlineView.style = .plain
+        outlineView.rowHeight = 17
+        outlineView.autoresizesOutlineColumn = false
+        outlineView.intercellSpacing = .init(width: 3.0, height: 2.0)
         outlineView.allowsMultipleSelection = true
         outlineView.delegate = self
         outlineView.registerForDraggedTypes([.string])
