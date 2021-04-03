@@ -28,23 +28,21 @@ extension TreeList where Value: Equatable {
 
 final class TreeTests: XCTestCase {
     func testIndexAfter() {
-        let tree = TreeNode(
-            "A",
-            children: [
-                .init("AA"),
-                .init("AB"),
-                .init("AC", children: [
-                    .init("ACA"),
-                    .init("ACB"),
-                    .init("ACC"),
-                    .init("ACD", children: [
-                        .init("ACDA"),
-                        .init("ACDB"),
-                        .init("ACDC"),
-                    ]),
-                ]),
-                .init("AD"),
-        ])
+        let tree = TreeNode("A") {
+            "AA"
+            "AB"
+            TreeNode("AC") {
+                "ACA"
+                "ACB"
+                "ACC"
+                TreeNode("ACD") {
+                    "ACDA"
+                    "ACDB"
+                    "ACDC"
+                }
+            }
+            "AD"
+        }
         
         XCTAssertEqual(
             tree.map(\.value),
@@ -52,23 +50,21 @@ final class TreeTests: XCTestCase {
         )
     }
     func testReveresed() {
-        let tree = TreeNode(
-            "A",
-            children: [
-                .init("AA"),
-                .init("AB"),
-                .init("AC", children: [
-                    .init("ACA"),
-                    .init("ACB"),
-                    .init("ACC"),
-                    .init("ACD", children: [
-                        .init("ACDA"),
-                        .init("ACDB"),
-                        .init("ACDC"),
-                    ]),
-                ]),
-                .init("AD"),
-        ])
+        let tree = TreeNode("A") {
+            "AA"
+            "AB"
+            TreeNode("AC") {
+                "ACA"
+                "ACB"
+                "ACC"
+                TreeNode("ACD") {
+                    "ACDA"
+                    "ACDB"
+                    "ACDC"
+                }
+            }
+            "AD"
+        }
         
         var index = tree.index(before: tree.endIndex)
         while index > tree.startIndex {
@@ -92,23 +88,23 @@ final class TreeTests: XCTestCase {
     }
     
     func testTreeRootIndexAfter() {
-        let tree: TreeList = [TreeNode(
-            "A",
-            children: [
-                .init("AA"),
-                .init("AB"),
-                .init("AC", children: [
-                    .init("ACA"),
-                    .init("ACB"),
-                    .init("ACC"),
-                    .init("ACD", children: [
-                        .init("ACDA"),
-                        .init("ACDB"),
-                        .init("ACDC"),
-                    ]),
-                ]),
-                .init("AD"),
-        ])]
+        let tree = TreeList<String> {
+            TreeNode("A") {
+                "AA"
+                "AB"
+                TreeNode("AC") {
+                    "ACA"
+                    "ACB"
+                    "ACC"
+                    TreeNode("ACD") {
+                        "ACDA"
+                        "ACDB"
+                        "ACDC"
+                    }
+                }
+                "AD"
+            }
+        }
         
         XCTAssertEqual(
             tree.map(\.value),
@@ -116,23 +112,23 @@ final class TreeTests: XCTestCase {
         )
     }
     func testTreeRootReveresed() {
-        let tree: TreeList = [TreeNode(
-            "A",
-            children: [
-                .init("AA"),
-                .init("AB"),
-                .init("AC", children: [
-                    .init("ACA"),
-                    .init("ACB"),
-                    .init("ACC"),
-                    .init("ACD", children: [
-                        .init("ACDA"),
-                        .init("ACDB"),
-                        .init("ACDC"),
-                    ]),
-                ]),
-                .init("AD"),
-        ])]
+        let tree = TreeList<String> {
+            TreeNode("A") {
+                "AA"
+                "AB"
+                TreeNode("AC") {
+                    "ACA"
+                    "ACB"
+                    "ACC"
+                    TreeNode("ACD") {
+                        "ACDA"
+                        "ACDB"
+                        "ACDC"
+                    }
+                }
+                "AD"
+            }
+        }
         
         XCTAssertEqual(
             Array(tree.reversed()).count,
@@ -150,27 +146,27 @@ final class TreeTests: XCTestCase {
         )
     }
     
-//    func testRemoveAll() {
-//        var tree: TreeList = [TreeNode(
-//            "A",
-//            children: [
-//                .init("AA"),
-//                .init("AB"),
-//                .init("AC", children: [
-//                    .init("ACA"),
-//                    .init("ACB"),
-//                    .init("ACC"),
-//                    .init("ACD", children: [
-//                        .init("ACDA"),
-//                        .init("ACDB"),
-//                        .init("ACDC"),
-//                    ]),
-//                ]),
-//                .init("AD"),
-//        ])]
-//        tree.removeAll()
-//        XCTAssertEqual(tree.count, 0)
-//    }
+    func testRemoveAll() {
+        var tree = TreeList<String> {
+            TreeNode("A") {
+                "AA"
+                "AB"
+                TreeNode("AC") {
+                    "ACA"
+                    "ACB"
+                    "ACC"
+                    TreeNode("ACD") {
+                        "ACDA"
+                        "ACDB"
+                        "ACDC"
+                    }
+                }
+                "AD"
+            }
+        }
+        tree.removeAll(where: { _ in true })
+        XCTAssertEqual(tree.count, 0)
+    }
     func testInsert() {
         var tree = TreeList<String>()
         tree.insert(contentsOf: [TreeNode("A")], at: tree.startIndex)
@@ -184,23 +180,23 @@ final class TreeTests: XCTestCase {
     }
     
     func testDiffing() {
-        var tree: TreeList = [TreeNode(
-            "A",
-            children: [
-                .init("AA"),
-                .init("AB"),
-                .init("AC", children: [
-                    .init("ACA"),
-                    .init("ACB"),
-                    .init("ACC"),
-                    .init("ACD", children: [
-                        .init("ACDA"),
-                        .init("ACDB"),
-                        .init("ACDC"),
-                    ]),
-                ]),
-                .init("AD"),
-        ])]
+        var tree = TreeList<String> {
+            TreeNode("A") {
+                "AA"
+                "AB"
+                TreeNode("AC") {
+                    "ACA"
+                    "ACB"
+                    "ACC"
+                    TreeNode("ACD") {
+                        "ACDA"
+                        "ACDB"
+                        "ACDC"
+                    }
+                }
+                "AD"
+            }
+        }
         tree.remove(at: tree.firstIndex(where: { $0.value == "AC" })!)
         XCTAssertEqual(
             tree,
