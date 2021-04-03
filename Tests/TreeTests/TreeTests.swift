@@ -27,6 +27,7 @@ extension TreeList where Value: Equatable {
 }
 
 final class TreeTests: XCTestCase {
+    #if swift(>=5.4) // TODO: remove me, once CI has support for Swift 5.4
     func testIndexAfter() {
         let tree = TreeNode("A") {
             "AA"
@@ -200,15 +201,16 @@ final class TreeTests: XCTestCase {
         tree.remove(at: tree.firstIndex(where: { $0.value == "AC" })!)
         XCTAssertEqual(
             tree,
-            [TreeNode(
-                "A",
-                children: [
-                    .init("AA"),
-                    .init("AB"),
-                    .init("AD"),
-            ])]
+            TreeList<String> {
+                TreeNode("A") {
+                    "AA"
+                    "AB"
+                    "AD"
+                }
+            }
         )
     }
+    #endif
     func testMapChildrenWithParents() {
         let tree: TreeList = """
         - A
