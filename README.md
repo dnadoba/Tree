@@ -1,4 +1,4 @@
-# Tree - general tree data structure, tree diffing, NSOutlineView and SwiftUI support
+# Tree - general tree data structure, tree diffing, NSOutlineView and SwiftUI support [![Documentation](https://img.shields.io/badge/Documentation-<Color>.svg)](https://dnadoba.github.io/Tree/)
 This package primarily includes a general tree data structure. 
 It also includes a tree diffing algorithm and `OutlineViewTreeDataSource` that allows to use Swift value types with `NSOutlineView` 
 A demo App can be found in the `Tree macOS` folder and the `NSOutlineView` Playground with support for drag and drop, undo/redo and animations.
