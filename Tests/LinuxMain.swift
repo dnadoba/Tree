@@ -1,7 +1,1 @@
-import XCTest
-
-import TreeTests
-
-var tests = [XCTestCaseEntry]()
-tests += TreeTests.allTests()
-XCTMain(tests)
+#error("Run tests with `swift test --enable-test-discovery`.")
