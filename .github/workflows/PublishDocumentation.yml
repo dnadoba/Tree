@@ -1,8 +1,6 @@
 name: PublishDocumentation
 
 on:
-  push:
-    branch: [main]
   release:
     types: [published]
   
