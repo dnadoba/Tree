@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Utilities.swift
 //  
 //
 //  Created by David Nadoba on 07.12.20.

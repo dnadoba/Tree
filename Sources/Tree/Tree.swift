@@ -449,7 +449,7 @@ extension TreeList {
 // MARK: Move
 extension TreeList where Value: Hashable {
     
-    /// Moves the TreeNodes at the given `sourceIndices` to the `insertIndex`.
+    /// Moves the TreeNodes at the given `sourceIndices` to `insertIndex`.
     ///  The `sourceIndices` and `insertIndex` are both specified in the before state of the tree.
     ///  If elements are removed before the `insertIndex`, the `insertIndex` will be adjusted.
     ///
@@ -504,7 +504,7 @@ extension TreeList where Value: Hashable {
 }
 
 extension MutableCollection {
-    mutating func mapInPlace(_ transform: (inout Element) -> ()) {
+    fileprivate mutating func mapInPlace(_ transform: (inout Element) -> ()) {
         for index in indices {
             transform(&self[index])
         }

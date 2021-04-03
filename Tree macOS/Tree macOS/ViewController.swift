@@ -25,23 +25,23 @@ extension NSTableView {
 
 class TreeController: NSViewController {
     typealias Value = String
-    var tree: TreeList = [TreeNode(
-                            "A",
-                            children: [
-                                .init("B"),
-                                .init("C"),
-                                .init("D", children: [
-                                    .init("E"),
-                                    .init("F"),
-                                    .init("G"),
-                                    .init("H", children: [
-                                        .init("I"),
-                                        .init("L"),
-                                        .init("M"),
-                                    ]),
-                                ]),
-                                .init("N"),
-                            ])]
+    var tree = TreeList<String> {
+        TreeNode("A") {
+            "B"
+            "C"
+            TreeNode("D") {
+                "E"
+                "F"
+                "G"
+                TreeNode("H") {
+                    "I"
+                    "L"
+                    "M"
+                }
+            }
+            "N"
+        }
+    }
     
     private let outlineView = NSOutlineView(frame: NSRect(origin: .zero, size: .init(width: 200, height: 400)))
     private let scrollView = NSScrollView()
