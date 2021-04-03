@@ -308,10 +308,18 @@ extension TreeList {
     }
 }
 
-extension TreeList: CustomDebugStringConvertible where Value: CustomDebugStringConvertible {
-    public var debugDescription: String {
+extension TreeNode: CustomStringConvertible where Value: CustomStringConvertible {
+    public var description: String {
         return mapValuesWithParents({ parents, value -> String in
-            repeatElement("  ", count: parents.count).joined() + "- \(value.debugDescription)"
+            repeatElement("  ", count: parents.count).joined() + "- \(value.description)"
+        }).map(\.value).joined(separator: "\n")
+    }
+}
+
+extension TreeList: CustomStringConvertible where Value: CustomStringConvertible {
+    public var description: String {
+        return mapValuesWithParents({ parents, value -> String in
+            repeatElement("  ", count: parents.count).joined() + "- \(value.description)"
         }).map(\.value).joined(separator: "\n")
     }
 }
